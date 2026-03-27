@@ -153,49 +153,35 @@ body {
   font-weight: 600; cursor: pointer; border: none; font-family: inherit;
   letter-spacing: .01em; display: flex; align-items: center; gap: 6px; transition: all .15s;
 }
-.btn-ghost { background: #F4F4F6; color: #52525B; border: none; border-radius: 10px; }
-.btn-ghost:hover { background: #EAEAED; color: #191C1F; }
-.btn-acc { background: #191C1F; color: #fff; border: none; border-radius: 10px; }
-.btn-acc:hover { background: #2D3036; }
+.btn-ghost { background: #F4F4F6; color: #52525B; border: none; border-radius: 10px; transition: all .15s ease; }
+.btn-ghost:hover { background: #EAEAED; color: #191C1F; transform: translateY(-1px); }
+.btn-acc { background: #191C1F; color: #fff; border: none; border-radius: 10px; transition: all .15s ease; }
+.btn-acc:hover { background: #2D3036; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(25,28,31,.2); }
 
 /* ═══════════════════════════════════════
-   CONTEXT BAND
+   CONTEXT NOTE — single justified paragraph
 ═══════════════════════════════════════ */
-.ctx-band {
-  background: var(--bg);
-  border-bottom: none;
-  padding: 16px 24px;
-}
-.ctx-band-inner {
+.ctx-note {
   max-width: 1140px; margin: 0 auto;
-  display: flex; gap: 10px; flex-wrap: wrap;
+  padding: 12px 24px 8px;
+  font-size: 11px; line-height: 1.7; color: var(--ink3);
+  text-align: justify;
 }
-.ctx-pill {
-  display: flex; align-items: center; gap: 7px;
-  background: var(--pill-bg); border: none;
-  border-radius: 100px; padding: 7px 16px;
-  font-size: 12px; color: var(--pill-c);
+.ctx-note .ctx-dot {
+  display: inline-block; width: 5px; height: 5px;
+  border-radius: 50%; margin: 0 4px 1px 2px; vertical-align: middle;
 }
-.ctx-pill-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
-.ctx-pill-dot.amber { background: var(--amber); }
-.ctx-pill-dot.green { background: var(--green); }
-.ctx-pill-dot.acc   { background: #6366F1; }
-
-/* ═══════════════════════════════════════
-   LTV STRIP
-═══════════════════════════════════════ */
-.ltv-strip {
-  background: var(--card); border: none;
-  border-radius: var(--r); padding: 16px 22px;
-  margin: 28px 0; display: flex; align-items: center;
-  gap: 16px; flex-wrap: wrap;
+.ctx-note .ctx-dot.amber { background: var(--amber); }
+.ctx-note .ctx-dot.green { background: var(--green); }
+.ctx-note .ctx-dot.acc   { background: #6366F1; }
+.ctx-note .ctx-sep {
+  display: inline; margin: 0 6px; color: var(--ink4);
 }
-.ltv-strip-text { font-size: 13px; color: var(--ink2); flex: 1; }
-.ltv-strip-text strong { color: var(--ink); }
-.ltv-formula {
-  font-size: 12px; font-family: 'SF Mono','Fira Code',monospace;
-  color: var(--ltv-f-c); background: var(--ltv-f-bg);
-  padding: 5px 12px; border-radius: var(--rsm); white-space: nowrap;
+.ctx-note strong { color: var(--ink2); font-weight: 500; }
+.ctx-note code {
+  font-size: 10px; font-family: 'SF Mono','Fira Code',monospace;
+  color: var(--ink3); background: #F4F4F6;
+  padding: 2px 6px; border-radius: 4px;
 }
 
 /* ═══════════════════════════════════════
@@ -209,9 +195,12 @@ body {
 .kpi-card {
   background: var(--card); padding: 24px 22px 20px;
   border-radius: var(--r);
+  transition: transform .2s ease, box-shadow .2s ease;
 }
-.kpi-card:first-child { border-radius: var(--r); }
-.kpi-card:last-child  { border-radius: var(--r); }
+.kpi-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}
 .kpi-label {
   font-size: 11px; font-weight: 600; letter-spacing: .08em;
   text-transform: uppercase; color: var(--ink3);
@@ -235,6 +224,11 @@ body {
 .card {
   background: var(--card); border-radius: var(--r);
   padding: 24px; border: none;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
 }
 .card-title {
   font-size: 11px; font-weight: 600; letter-spacing: .08em;
@@ -249,7 +243,8 @@ body {
   gap: 14px; margin-bottom: 36px;
 }
 .funnel { display: flex; flex-direction: column; gap: 8px; }
-.f-row { display: flex; align-items: center; gap: 10px; }
+.f-row { display: flex; align-items: center; gap: 10px; transition: transform .15s ease; }
+.f-row:hover { transform: translateX(3px); }
 .f-lbl {
   font-size: 12px; color: var(--ink2); width: 170px;
   flex-shrink: 0; text-align: right; font-weight: 500;
@@ -303,11 +298,15 @@ body {
   display: inline-flex; align-items: center; gap: 4px;
   padding: 6px 12px; border-radius: 100px; border: none;
   font-size: 12px; font-weight: 600; cursor: pointer;
-  background: #F4F4F6; color: #52525B; transition: all .15s;
+  background: #F4F4F6; color: #52525B; transition: all .15s ease;
 }
-.filter-chip:hover { background: #EAEAED; }
+.filter-chip:hover { background: #EAEAED; transform: translateY(-1px); }
 .filter-chip.active {
   background: #191C1F; color: #FFFFFF;
+}
+.filter-chip.active:hover {
+  background: #2D3036; transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(25,28,31,.18);
 }
 .search-box {
   flex: 1; min-width: 180px;
@@ -328,34 +327,52 @@ body {
 /* ═══════════════════════════════════════
    B2B INSIGHTS ROW (horizontal scroll)
 ═══════════════════════════════════════ */
-.insights-label {
-  font-size: 11px; font-weight: 600;
-  letter-spacing: .1em; text-transform: uppercase; color: var(--ink3);
-  margin-bottom: 14px; padding-top: 8px;
+/* B2B TICKER — Revolut marquee style */
+.ticker-section {
+  padding: 20px 0 16px;
+  border-bottom: 1px solid #E8E8EC;
 }
-.insights-scroll {
-  display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
-  padding: 0 0 4px; margin-bottom: 36px;
-  scrollbar-width: none; -ms-overflow-style: none;
-  cursor: grab;
+.ticker-wrap {
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
-.insights-scroll::-webkit-scrollbar { display: none; }
-.insights-scroll.grabbing { cursor: grabbing; }
-.insight-card {
-  flex-shrink: 0; min-width: 280px; scroll-snap-align: start;
-  background: #F4F4F6; border-radius: 16px; padding: 14px 18px;
-  display: flex; flex-direction: column; justify-content: center;
+.ticker-track {
+  display: flex; gap: 16px;
+  width: max-content;
+  animation: ticker-slide 45s linear infinite;
 }
-.insight-num {
-  font-size: 20px; font-weight: 800; color: #191C1F;
-  line-height: 1; margin-bottom: 4px;
+.ticker-wrap:hover .ticker-track {
+  animation-play-state: paused;
 }
-.insight-text {
-  font-size: 12px; font-weight: 500; color: #52525B; margin-bottom: 6px;
-  line-height: 1.5; text-align: left;
+@keyframes ticker-slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
-.insight-src {
-  font-size: 10px; color: #9CA3AF; font-style: italic; line-height: 1.4;
+.ticker-item {
+  flex-shrink: 0;
+  display: flex; align-items: center; gap: 14px;
+  background: var(--card); border-radius: 12px;
+  padding: 14px 20px; min-width: 300px;
+  transition: background .2s;
+}
+.ticker-item:hover {
+  background: var(--card2);
+}
+.ticker-stat {
+  font-size: 24px; font-weight: 900; color: var(--ink);
+  line-height: 1; white-space: nowrap; letter-spacing: -.5px;
+}
+.ticker-body {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.ticker-text {
+  font-size: 12px; font-weight: 500; color: var(--ink2);
+  line-height: 1.4;
+}
+.ticker-src {
+  font-size: 10px; color: var(--ink3); line-height: 1.3;
 }
 
 /* ═══════════════════════════════════════
@@ -368,8 +385,10 @@ body {
 }
 .ii {
   display: flex; align-items: flex-start; gap: 10px;
-  padding: 10px 0; border-bottom: 1px solid #E8E8EC;
+  padding: 10px 6px; margin: 0 -6px; border-bottom: 1px solid #E8E8EC;
+  border-radius: 8px; transition: background .15s ease;
 }
+.ii:hover { background: rgba(0,0,0,.025); }
 .ii:last-child { border-bottom: none; padding-bottom: 0; }
 .ii-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
 .ii-t { font-size: 13px; font-weight: 600; color: var(--ink); }
@@ -381,6 +400,10 @@ body {
 .tcard {
   background: var(--card); border-radius: var(--r);
   border: none; overflow: hidden; margin-bottom: 36px;
+  transition: box-shadow .2s ease;
+}
+.tcard:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,.05);
 }
 .tcard-head {
   display: flex; justify-content: space-between; align-items: center;
@@ -402,10 +425,10 @@ thead th:hover { color: var(--ink2); }
 th.sorted .si { opacity: 1; color: var(--si-c); }
 tbody tr {
   border-bottom: 1px solid var(--tr-sep);
-  cursor: pointer; transition: background .1s;
+  cursor: pointer; transition: background .15s, transform .15s;
 }
 tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: var(--tr-hover); }
+tbody tr:hover { background: var(--tr-hover); transform: scale(1.005); }
 tbody tr.sel { background: var(--tr-sel); }
 td { padding: 11px 14px; vertical-align: middle; }
 td.co { font-weight: 600; font-size: 13px; color: var(--ink); }
@@ -441,6 +464,10 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
   background: var(--card); border: none;
   border-radius: var(--r); padding: 22px 24px;
   margin-bottom: 36px; display: none;
+  transition: box-shadow .2s ease;
+}
+.dp.open:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,.05);
 }
 .dp.open { display: block; }
 .dp-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
@@ -648,13 +675,59 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
   </div>
 </div>
 
-<!-- CONTEXT BAND -->
-<div class="ctx-band">
-  <div class="ctx-band-inner">
-    <div class="ctx-pill"><div class="ctx-pill-dot amber"></div>Réponses email uniquement — aucun cold/warm calling initié</div>
-    <div class="ctx-pill"><div class="ctx-pill-dot green"></div>Projet pilote Hike Up — Phase de cold call pour évaluer le marché, en interne pour ne pas mobiliser les ressources Lisam.</div>
-    <div class="ctx-pill"><div class="ctx-pill-dot acc"></div>Export 26 mars 2026</div>
+<!-- B2B TICKER -->
+<div class="ticker-section">
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="ticker-track">
+      <div class="ticker-item">
+        <div class="ticker-stat">21×</div>
+        <div class="ticker-body">
+          <div class="ticker-text">plus de conversions si contacté en 5 min vs. 30 min</div>
+          <div class="ticker-src">MIT / InsideSales.com — HBR, 2011</div>
+        </div>
+      </div>
+      <div class="ticker-item">
+        <div class="ticker-stat">35–50%</div>
+        <div class="ticker-body">
+          <div class="ticker-text">des ventes vont au premier à répondre</div>
+          <div class="ticker-src">InsideSales.com Research</div>
+        </div>
+      </div>
+      <div class="ticker-item">
+        <div class="ticker-stat">82%</div>
+        <div class="ticker-body">
+          <div class="ticker-text">des acheteurs B2B acceptent un RDV avec un commercial proactif</div>
+          <div class="ticker-src">Rain Group — Top Performance, 2018</div>
+        </div>
+      </div>
+      <div class="ticker-item">
+        <div class="ticker-stat">44%</div>
+        <div class="ticker-body">
+          <div class="ticker-text">abandonnent après 1 seul suivi — 80% des ventes nécessitent 5+</div>
+          <div class="ticker-src">Brevet Group / Marketing Donut</div>
+        </div>
+      </div>
+      <div class="ticker-item">
+        <div class="ticker-stat">+95%</div>
+        <div class="ticker-body">
+          <div class="ticker-text">de profits avec seulement +5% de rétention</div>
+          <div class="ticker-src">Frederick Reichheld, Bain &amp; Company — HBR, 2000</div>
+        </div>
+      </div>
+      <div class="ticker-item">
+        <div class="ticker-stat">8</div>
+        <div class="ticker-body">
+          <div class="ticker-text">tentatives pour joindre un prospect en cold calling</div>
+          <div class="ticker-src">Telenet &amp; Ovation Sales Group</div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- CONTEXT NOTE -->
+<div class="ctx-note">
+  <span class="ctx-dot amber"></span>Réponses email uniquement — aucun cold/warm calling initié.<span class="ctx-sep">·</span><span class="ctx-dot green"></span>Projet pilote Hike Up — phase de cold call pour évaluer le marché, en interne pour ne pas mobiliser les ressources Lisam.<span class="ctx-sep">·</span><span class="ctx-dot acc"></span>Export 26 mars 2026.
 </div>
 
 <!-- PASSWORD MODAL -->
@@ -772,12 +845,8 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
 <!-- MAIN CONTENT -->
 <div class="wrap">
 
-  <div class="ltv-strip">
-    <div class="ltv-strip-text">
-      Valeurs en <strong>ARR (Annual Recurring Revenue)</strong>. Rétention estimée à
-      <strong id="ltv-s-ret">80 %</strong> → LTV par dossier : <strong id="ltv-s-val">60 000 €</strong>
-    </div>
-    <div class="ltv-formula" id="ltv-s-formula">LTV = 12 000 € ÷ 20 % = 60 000 €</div>
+  <div class="ctx-note" style="padding:8px 0 16px; margin-bottom:8px; border-bottom:1px solid #E8E8EC;">
+    Valeurs en <strong>ARR (Annual Recurring Revenue)</strong>. Rétention estimée à <strong id="ltv-s-ret">80 %</strong> → LTV par dossier : <strong id="ltv-s-val">60 000 €</strong> <code id="ltv-s-formula">LTV = 12 000 € ÷ 20 % = 60 000 €</code>
   </div>
 
   <div class="kpi-row">
@@ -856,40 +925,6 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
         <div class="ii-dot" style="background:var(--ink3)"></div>
         <div><div class="ii-t">22 % sans produit assigné</div><div class="ii-b">4 dossiers (48k€ ARR · 240k€ LTV) sans produit cible renseigné.</div></div>
       </div>
-    </div>
-  </div>
-
-  <div class="insights-label">Repères B2B</div>
-  <div class="insights-scroll" id="insights-scroll">
-    <div class="insight-card">
-      <div class="insight-num">21×</div>
-      <div class="insight-text">plus de conversions si contacté en 5 min vs. 30 min</div>
-      <div class="insight-src">MIT / InsideSales.com — HBR, 2011</div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-num">35–50%</div>
-      <div class="insight-text">des ventes vont au premier à répondre</div>
-      <div class="insight-src">InsideSales.com Research</div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-num">82%</div>
-      <div class="insight-text">des acheteurs B2B acceptent un RDV avec un commercial proactif</div>
-      <div class="insight-src">Rain Group — Top Performance, 2018</div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-num">44%</div>
-      <div class="insight-text">abandonnent après 1 seul suivi — 80% des ventes nécessitent 5+</div>
-      <div class="insight-src">Brevet Group / Marketing Donut</div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-num">+95%</div>
-      <div class="insight-text">de profits avec seulement +5% de rétention</div>
-      <div class="insight-src">Frederick Reichheld, Bain &amp; Company — HBR, 2000</div>
-    </div>
-    <div class="insight-card">
-      <div class="insight-num">8</div>
-      <div class="insight-text">tentatives pour joindre un prospect en cold calling</div>
-      <div class="insight-src">Telenet &amp; Ovation Sales Group</div>
     </div>
   </div>
 
@@ -1322,65 +1357,15 @@ function closeDP(){
   document.getElementById('dp').classList.remove('open');
 }
 
-/* AUTO-SCROLL B2B INSIGHTS */
+/* TICKER — duplicate items for seamless infinite loop */
 (function(){
-  const el = document.getElementById('insights-scroll');
-  if(!el) return;
-  let speed = .5; // px per frame
-  let paused = false;
-  let rafId = null;
-  let isDragging = false;
-  let startX, scrollLeft;
-
-  function tick(){
-    if(!paused && !isDragging){
-      el.scrollLeft += speed;
-      // loop: if at end, jump back to start
-      if(el.scrollLeft >= el.scrollWidth - el.clientWidth - 1){
-        el.scrollLeft = 0;
-      }
-    }
-    rafId = requestAnimationFrame(tick);
-  }
-  rafId = requestAnimationFrame(tick);
-
-  // Pause on hover
-  el.addEventListener('mouseenter', ()=>{ paused = true; });
-  el.addEventListener('mouseleave', ()=>{ if(!isDragging) paused = false; });
-
-  // Drag to scroll manually
-  el.addEventListener('mousedown', e=>{
-    isDragging = true; paused = true;
-    el.classList.add('grabbing');
-    startX = e.pageX - el.offsetLeft;
-    scrollLeft = el.scrollLeft;
-    e.preventDefault();
-  });
-  document.addEventListener('mousemove', e=>{
-    if(!isDragging) return;
-    const x = e.pageX - el.offsetLeft;
-    el.scrollLeft = scrollLeft - (x - startX);
-  });
-  document.addEventListener('mouseup', ()=>{
-    if(!isDragging) return;
-    isDragging = false;
-    el.classList.remove('grabbing');
-    paused = false;
-  });
-
-  // Touch support
-  let touchStartX;
-  el.addEventListener('touchstart', e=>{
-    paused = true;
-    touchStartX = e.touches[0].pageX;
-    scrollLeft = el.scrollLeft;
-  }, {passive:true});
-  el.addEventListener('touchmove', e=>{
-    const x = e.touches[0].pageX;
-    el.scrollLeft = scrollLeft - (x - touchStartX);
-  }, {passive:true});
-  el.addEventListener('touchend', ()=>{
-    paused = false;
+  const track = document.getElementById('ticker-track');
+  if(!track) return;
+  const items = Array.from(track.children);
+  items.forEach(item => {
+    const clone = item.cloneNode(true);
+    clone.setAttribute('aria-hidden','true');
+    track.appendChild(clone);
   });
 })();
 
