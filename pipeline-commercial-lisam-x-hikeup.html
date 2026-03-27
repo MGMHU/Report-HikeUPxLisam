@@ -1,0 +1,1425 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pipeline Commercial | Lisam × Hike UP</title>
+<meta name="description" content="Tableau de bord pipeline commercial — Lisam × Hike UP. Suivi ARR, LTV, opportunités et leads. Q1 2026.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Pipeline Commercial | Lisam × Hike UP">
+<meta property="og:description" content="Suivi pipeline commercial ARR · LTV · Opportunités · Leads — Q1 2026">
+<meta property="og:type" content="website">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ═══════════════════════════════════════
+   DARK THEME (default)
+═══════════════════════════════════════ */
+:root {
+  --ink:       #E4E4E7;
+  --ink2:      #A1A1AA;
+  --ink3:      #52525B;
+  --ink4:      #27272A;
+  --bg:        #0C0C14;
+  --card:      #111118;
+  --card2:     #16161F;
+  --sep:       #1E1E2A;
+  --hero-bg:   #0C0C14;
+  --hero-text: #FFFFFF;
+  --hero-sub:  #52525B;
+  --hero-eye:  #52525B;
+  --hero-div:  #1E1E2A;
+  --hero-stat: #3F3F46;
+  --acc:       #6366F1;
+  --teal:      #2DD4BF;
+  --red:       #F87171;
+  --amber:     #FBBF24;
+  --green:     #4ADE80;
+  --r:         12px;
+  --rsm:       8px;
+  --sh:        0 1px 3px rgba(0,0,0,.3);
+  --sh2:       0 4px 20px rgba(0,0,0,.4);
+  /* badge colours */
+  --b-lead-bg: #2D1500; --b-lead-c: #FB923C;
+  --b-opp-bg:  #1A1A3E; --b-opp-c:  #818CF8;
+  --b-s0-bg:   #0D2010; --b-s0-c:   #4ADE80;
+  --b-s2-bg:   #2A1A00; --b-s2-c:   #FBBF24;
+  --b-s3-bg:   #1A1A3E; --b-s3-c:   #818CF8;
+  --b-s4-bg:   #231A3E; --b-s4-c:   #C084FC;
+  --b-s5-bg:   #2D0D0D; --b-s5-c:   #F87171;
+  --b-pe-bg:   #1A1A3E; --b-pe-c:   #818CF8;
+  --b-pc-bg:   #231A3E; --b-pc-c:   #C084FC;
+  --b-pp-bg:   #2A1A00; --b-pp-c:   #FBBF24;
+  --b-pm-bg:   #0D2010; --b-pm-c:   #4ADE80;
+  --b-pn-bg:   #1C1C24; --b-pn-c:   #52525B;
+  /* tag colours */
+  --tag-arr-bg: #1A1A2E; --tag-arr-c: #818CF8;
+  --tag-ltv-bg: #0D2020; --tag-ltv-c: #2DD4BF;
+  /* ltv formula */
+  --ltv-f-bg: #1A1A2E; --ltv-f-c: #818CF8;
+  /* dp ltv row */
+  --dp-ltv-bg: #1A1A2E; --dp-ltv-c: #818CF8;
+  /* dp note */
+  --dp-note-bg: #0F0F18;
+  /* funnel track */
+  --f-track-bg: #1E1E2A;
+  /* table row states */
+  --tr-hover: #18181F;
+  --tr-sel:   #1A1A2E;
+  --tr-sep:   #0F0F18;
+  /* savez num */
+  --savez-num-c: #818CF8;
+  /* link */
+  --lk-c: #818CF8;
+  /* sorted indicator */
+  --si-c: #818CF8;
+  /* modal */
+  --modal-bg: #16161F;
+  --modal-input-bg: #0F0F18;
+  /* ctx pill */
+  --pill-bg: #111118; --pill-border: #1E1E2A; --pill-c: #A1A1AA;
+  /* toggle btn */
+  --tog-icon: "☀️";
+}
+
+/* ═══════════════════════════════════════
+   LIGHT THEME
+═══════════════════════════════════════ */
+[data-theme="light"] {
+  --ink:       #09090B;
+  --ink2:      #52525B;
+  --ink3:      #9CA3AF;
+  --ink4:      #D1D5DB;
+  --bg:        #F4F4F8;
+  --card:      #FFFFFF;
+  --card2:     #F8F8FC;
+  --sep:       #E4E4EB;
+  --hero-bg:   #111827;
+  --hero-text: #FFFFFF;
+  --hero-sub:  #6B7280;
+  --hero-eye:  #6B7280;
+  --hero-div:  #374151;
+  --hero-stat: #6B7280;
+  --teal:      #0D9488;
+  --red:       #DC2626;
+  --amber:     #D97706;
+  --green:     #059669;
+  /* badge colours */
+  --b-lead-bg: #FFF7ED; --b-lead-c: #C2410C;
+  --b-opp-bg:  #EEF2FF; --b-opp-c:  #4338CA;
+  --b-s0-bg:   #F0FDF4; --b-s0-c:   #166534;
+  --b-s2-bg:   #FFFBEB; --b-s2-c:   #92400E;
+  --b-s3-bg:   #EEF2FF; --b-s3-c:   #3730A3;
+  --b-s4-bg:   #F5F3FF; --b-s4-c:   #5B21B6;
+  --b-s5-bg:   #FEF2F2; --b-s5-c:   #991B1B;
+  --b-pe-bg:   #EEF2FF; --b-pe-c:   #3730A3;
+  --b-pc-bg:   #F5F3FF; --b-pc-c:   #5B21B6;
+  --b-pp-bg:   #FFFBEB; --b-pp-c:   #92400E;
+  --b-pm-bg:   #F0FDF4; --b-pm-c:   #166534;
+  --b-pn-bg:   #F4F4F6; --b-pn-c:   #71717A;
+  /* tag colours */
+  --tag-arr-bg: #EEF2FF; --tag-arr-c: #4F46E5;
+  --tag-ltv-bg: #F0FDFA; --tag-ltv-c: #0F766E;
+  /* ltv formula */
+  --ltv-f-bg: #EEF2FF; --ltv-f-c: #4F46E5;
+  /* dp ltv row */
+  --dp-ltv-bg: #EEF2FF; --dp-ltv-c: #3730A3;
+  /* dp note */
+  --dp-note-bg: #F8F8FC;
+  /* funnel track */
+  --f-track-bg: #F0F0F5;
+  /* table row states */
+  --tr-hover: #F8F8FC;
+  --tr-sel:   #EEF2FF;
+  --tr-sep:   #F4F4F6;
+  /* savez num */
+  --savez-num-c: #4F46E5;
+  /* link */
+  --lk-c: #4F46E5;
+  /* sorted indicator */
+  --si-c: #4F46E5;
+  /* modal */
+  --modal-bg: #FFFFFF;
+  --modal-input-bg: #F4F4F8;
+  /* ctx pill */
+  --pill-bg: #FFFFFF; --pill-border: #E4E4EB; --pill-c: #52525B;
+}
+
+/* ═══════════════════════════════════════
+   BASE
+═══════════════════════════════════════ */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background .2s, color .2s;
+}
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px 80px; }
+.section-gap { margin-bottom: 32px; }
+.section-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink3);
+  margin-bottom: 14px; padding-top: 8px;
+}
+
+/* ═══════════════════════════════════════
+   HERO  (always dark — intentional design anchor)
+═══════════════════════════════════════ */
+.hero {
+  background: var(--hero-bg);
+  padding: 56px 24px 52px;
+  border-bottom: 1px solid var(--hero-div);
+}
+.hero-inner {
+  max-width: 1140px; margin: 0 auto;
+  display: flex; align-items: flex-end;
+  justify-content: space-between; flex-wrap: wrap; gap: 32px;
+}
+.hero-eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--hero-eye); margin-bottom: 14px;
+}
+.hero-num {
+  font-size: clamp(48px,6vw,72px); font-weight: 900;
+  color: var(--hero-text); letter-spacing: -2px; line-height: 1;
+}
+.hero-num span {
+  font-size: clamp(24px,3vw,36px); font-weight: 400;
+  color: var(--hero-sub); margin-left: 8px; letter-spacing: 0;
+}
+.hero-sub { font-size: 13px; color: var(--hero-sub); margin-top: 10px; }
+.hero-right { display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-end; }
+.hero-stat { text-align: right; }
+.hero-stat-label {
+  font-size: 10px; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--hero-stat); margin-bottom: 4px;
+}
+.hero-stat-val { font-size: 28px; font-weight: 800; color: #FFFFFF; letter-spacing: -1px; }
+.hero-stat-val.acc { color: #818CF8; }
+.hero-stat-val.teal { color: #2DD4BF; }
+.hero-divider { width: 1px; height: 48px; background: var(--hero-div); align-self: flex-end; margin-bottom: 4px; }
+.hero-actions { display: flex; gap: 8px; align-self: flex-start; padding-top: 4px; }
+.btn {
+  padding: 8px 16px; border-radius: var(--rsm); font-size: 12px;
+  font-weight: 600; cursor: pointer; border: none; font-family: inherit;
+  letter-spacing: .01em; display: flex; align-items: center; gap: 6px; transition: all .15s;
+}
+.btn-ghost { background: #18181B; color: #A1A1AA; border: 1px solid #27272A; }
+.btn-ghost:hover { background: #27272A; color: #fff; }
+.btn-acc { background: #6366F1; color: #fff; border: none; }
+.btn-acc:hover { background: #4F46E5; }
+/* theme toggle — lives in dark hero, always uses dark-button style */
+.btn-theme {
+  background: #1E1E2A; color: #E4E4E7; border: 1px solid #2A2A3A;
+  padding: 8px 14px; border-radius: var(--rsm);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: inherit; display: flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s;
+  white-space: nowrap;
+}
+.btn-theme:hover { background: #27273A; border-color: #818CF8; }
+
+/* ═══════════════════════════════════════
+   CONTEXT BAND
+═══════════════════════════════════════ */
+.ctx-band {
+  background: var(--bg);
+  border-bottom: 1px solid var(--sep);
+  padding: 18px 24px;
+  transition: background .2s;
+}
+.ctx-band-inner {
+  max-width: 1140px; margin: 0 auto;
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.ctx-pill {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--pill-bg); border: 1px solid var(--pill-border);
+  border-radius: 100px; padding: 6px 13px;
+  font-size: 12px; color: var(--pill-c);
+  transition: background .2s, border-color .2s;
+}
+.ctx-pill-dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+.ctx-pill-dot.amber { background: var(--amber); }
+.ctx-pill-dot.green { background: var(--green); }
+.ctx-pill-dot.acc   { background: #818CF8; }
+
+/* ═══════════════════════════════════════
+   LTV STRIP
+═══════════════════════════════════════ */
+.ltv-strip {
+  background: var(--card); border: 1px solid var(--sep);
+  border-radius: var(--r); padding: 14px 20px;
+  margin: 32px 0; display: flex; align-items: center;
+  gap: 16px; flex-wrap: wrap; transition: background .2s, border-color .2s;
+}
+.ltv-strip-text { font-size: 13px; color: var(--ink2); flex: 1; }
+.ltv-strip-text strong { color: var(--ink); }
+.ltv-formula {
+  font-size: 12px; font-family: 'SF Mono','Fira Code',monospace;
+  color: var(--ltv-f-c); background: var(--ltv-f-bg);
+  padding: 5px 12px; border-radius: var(--rsm); white-space: nowrap;
+  transition: background .2s, color .2s;
+}
+
+/* ═══════════════════════════════════════
+   KPI ROW — flush tile grid
+═══════════════════════════════════════ */
+.kpi-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 1px; margin-bottom: 32px;
+  background: var(--sep); border-radius: var(--r); overflow: hidden;
+  transition: background .2s;
+}
+.kpi-card {
+  background: var(--card); padding: 24px 22px 20px;
+  transition: background .2s;
+}
+.kpi-card:first-child { border-radius: var(--r) 0 0 var(--r); }
+.kpi-card:last-child  { border-radius: 0 var(--r) var(--r) 0; }
+.kpi-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink3);
+  margin-bottom: 10px; display: flex; align-items: center; gap: 6px;
+}
+.kpi-tag {
+  font-size: 9px; font-weight: 700; padding: 1px 5px;
+  border-radius: 4px; letter-spacing: .04em;
+  transition: background .2s, color .2s;
+}
+.kpi-tag.arr { background: var(--tag-arr-bg); color: var(--tag-arr-c); }
+.kpi-tag.ltv { background: var(--tag-ltv-bg); color: var(--tag-ltv-c); }
+.kpi-val {
+  font-size: 28px; font-weight: 800;
+  letter-spacing: -1px; color: var(--ink); line-height: 1.1;
+}
+.kpi-sub { font-size: 12px; color: var(--ink3); margin-top: 6px; }
+
+/* ═══════════════════════════════════════
+   CARDS
+═══════════════════════════════════════ */
+.card {
+  background: var(--card); border-radius: var(--r);
+  padding: 24px; border: 1px solid var(--sep);
+  transition: background .2s, border-color .2s;
+}
+.card-title {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink3); margin-bottom: 18px;
+}
+
+/* ═══════════════════════════════════════
+   CHARTS ROW
+═══════════════════════════════════════ */
+.charts-row {
+  display: grid; grid-template-columns: 1.6fr 1fr;
+  gap: 12px; margin-bottom: 32px;
+}
+.funnel { display: flex; flex-direction: column; gap: 8px; }
+.f-row { display: flex; align-items: center; gap: 10px; }
+.f-lbl {
+  font-size: 12px; color: var(--ink2); width: 170px;
+  flex-shrink: 0; text-align: right; font-weight: 500;
+}
+.f-track {
+  flex: 1; height: 20px; background: var(--f-track-bg);
+  border-radius: 4px; overflow: hidden; transition: background .2s;
+}
+.f-fill {
+  height: 100%; border-radius: 4px;
+  transition: width .5s cubic-bezier(.4,0,.2,1);
+  display: flex; align-items: center; padding-left: 10px;
+  font-size: 10px; color: rgba(255,255,255,.85); font-weight: 600;
+}
+.f-meta { font-size: 11px; color: var(--ink3); width: 110px; text-align: right; }
+.f-note { text-align: right; font-size: 10px; color: var(--ink3); margin-top: 6px; }
+.leg { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.leg-row { display: flex; align-items: center; justify-content: space-between; }
+.leg-left { display: flex; align-items: center; gap: 8px; }
+.leg-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.leg-name { font-size: 12px; color: var(--ink2); }
+.leg-val { font-size: 12px; font-weight: 600; color: var(--ink); }
+
+/* ═══════════════════════════════════════
+   FILTERS
+═══════════════════════════════════════ */
+.filters {
+  background: var(--card); border-radius: var(--r);
+  padding: 14px 18px; margin-bottom: 14px;
+  display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;
+  border: 1px solid var(--sep); transition: background .2s, border-color .2s;
+}
+.fg { display: flex; flex-direction: column; gap: 4px; }
+.fg label {
+  font-size: 10px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink3);
+}
+.fg select, .fg input {
+  padding: 7px 10px; border: 1px solid var(--sep);
+  border-radius: var(--rsm); font-size: 13px; color: var(--ink);
+  background: var(--card2); outline: none; font-family: inherit; min-width: 130px;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.fg select:focus, .fg input:focus {
+  border-color: #6366F1; box-shadow: 0 0 0 2px rgba(99,102,241,.15);
+}
+.fg.wide { flex: 1; min-width: 180px; }
+.fg.wide input { width: 100%; }
+.btn-reset {
+  padding: 7px 12px; background: none;
+  border: 1px solid var(--sep); border-radius: var(--rsm);
+  font-size: 12px; color: var(--ink3); cursor: pointer; font-family: inherit;
+}
+.btn-reset:hover { background: var(--sep); color: var(--ink2); }
+.res-tag { font-size: 11px; color: var(--ink3); padding-bottom: 8px; align-self: flex-end; }
+
+/* ═══════════════════════════════════════
+   TABLE
+═══════════════════════════════════════ */
+.tcard {
+  background: var(--card); border-radius: var(--r);
+  border: 1px solid var(--sep); overflow: hidden; margin-bottom: 32px;
+  transition: background .2s, border-color .2s;
+}
+.tcard-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 18px 24px 0; margin-bottom: 14px;
+}
+.tcard-head h2 {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink3);
+}
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  padding: 10px 14px; text-align: left; font-size: 10px;
+  font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink3); border-bottom: 1px solid var(--sep);
+  cursor: pointer; user-select: none; white-space: nowrap;
+}
+thead th:hover { color: var(--ink2); }
+.si { opacity: .3; margin-left: 3px; font-size: 9px; }
+th.sorted .si { opacity: 1; color: var(--si-c); }
+tbody tr {
+  border-bottom: 1px solid var(--tr-sep);
+  cursor: pointer; transition: background .1s;
+}
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--tr-hover); }
+tbody tr.sel { background: var(--tr-sel); }
+td { padding: 11px 14px; vertical-align: middle; }
+td.co { font-weight: 600; font-size: 13px; color: var(--ink); }
+td.ct { color: var(--ink2); font-size: 13px; }
+td.ra { text-align: right; font-weight: 700; font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink); }
+td.rltv { text-align: right; color: var(--teal); font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
+td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
+.th-r { text-align: right; }
+
+/* BADGES — fully variable-driven */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600;
+}
+.b-lead { background: var(--b-lead-bg); color: var(--b-lead-c); }
+.b-opp  { background: var(--b-opp-bg);  color: var(--b-opp-c);  }
+.b-s0   { background: var(--b-s0-bg);   color: var(--b-s0-c);   }
+.b-s1   { background: var(--b-s0-bg);   color: var(--b-s0-c);   opacity:.85 }
+.b-s2   { background: var(--b-s2-bg);   color: var(--b-s2-c);   }
+.b-s3   { background: var(--b-s3-bg);   color: var(--b-s3-c);   }
+.b-s4   { background: var(--b-s4-bg);   color: var(--b-s4-c);   }
+.b-s5   { background: var(--b-s5-bg);   color: var(--b-s5-c);   }
+.b-pe   { background: var(--b-pe-bg);   color: var(--b-pe-c);   }
+.b-pc   { background: var(--b-pc-bg);   color: var(--b-pc-c);   }
+.b-pp   { background: var(--b-pp-bg);   color: var(--b-pp-c);   }
+.b-pm   { background: var(--b-pm-bg);   color: var(--b-pm-c);   }
+.b-pn   { background: var(--b-pn-bg);   color: var(--b-pn-c);   }
+
+/* ═══════════════════════════════════════
+   DETAIL PANEL
+═══════════════════════════════════════ */
+.dp {
+  background: var(--card); border: 1px solid var(--sep);
+  border-radius: var(--r); padding: 22px 24px;
+  margin-bottom: 32px; display: none;
+  transition: background .2s, border-color .2s;
+}
+.dp.open { display: block; }
+.dp-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+.dp-co { font-size: 20px; font-weight: 800; letter-spacing: -.5px; color: var(--ink); }
+.dp-ct { font-size: 13px; color: var(--ink3); margin-top: 2px; }
+.dp-close { background: none; border: none; font-size: 18px; cursor: pointer; color: var(--ink3); }
+.dp-ltv-row {
+  background: var(--dp-ltv-bg); border-radius: var(--rsm);
+  padding: 10px 14px; font-size: 12px; color: var(--dp-ltv-c);
+  margin-bottom: 16px; font-weight: 500;
+  transition: background .2s, color .2s;
+}
+.dp-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 16px; }
+.dp-f label {
+  font-size: 10px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink3); display: block; margin-bottom: 3px;
+}
+.dp-f span { font-size: 13px; color: var(--ink); }
+.dp-note {
+  background: var(--dp-note-bg); border-radius: var(--rsm);
+  padding: 10px 14px; font-size: 12px; color: var(--ink2);
+  line-height: 1.6; max-height: 100px; overflow-y: auto;
+  white-space: pre-wrap; word-break: break-word;
+  transition: background .2s;
+}
+.lk { color: var(--lk-c); text-decoration: none; font-size: 12px; }
+.lk:hover { text-decoration: underline; }
+
+/* ═══════════════════════════════════════
+   INSIGHTS
+═══════════════════════════════════════ */
+.insights-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; }
+.icard h2 {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink3); margin-bottom: 16px;
+}
+.ii {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--sep);
+}
+.ii:last-child { border-bottom: none; padding-bottom: 0; }
+.ii-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.ii-t { font-size: 13px; font-weight: 600; color: var(--ink); }
+.ii-b { font-size: 12px; color: var(--ink2); margin-top: 1px; line-height: 1.5; }
+
+/* ═══════════════════════════════════════
+   "LE SAVIEZ-VOUS"
+═══════════════════════════════════════ */
+.savez-wrap { margin-bottom: 32px; }
+.savez-toggle {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  color: var(--ink3); font-size: 11px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase;
+  padding: 10px 0; user-select: none;
+  border-top: 1px solid var(--sep);
+}
+.savez-toggle:hover { color: var(--ink2); }
+.savez-toggle-icon { transition: transform .2s; }
+.savez-toggle-icon.open { transform: rotate(180deg); }
+.savez-body { display: none; }
+.savez-body.open { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; padding-top: 14px; }
+.savez-item {
+  background: var(--card); border-radius: var(--r);
+  padding: 16px 18px; border: 1px solid var(--sep);
+  transition: background .2s, border-color .2s;
+}
+.savez-num {
+  font-size: 26px; font-weight: 800; letter-spacing: -1px;
+  color: var(--savez-num-c); line-height: 1.1; margin-bottom: 4px;
+  transition: color .2s;
+}
+.savez-claim { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+.savez-detail { font-size: 11px; color: var(--ink2); line-height: 1.5; }
+.savez-src { font-size: 10px; color: var(--ink3); margin-top: 6px; font-style: italic; }
+
+/* ═══════════════════════════════════════
+   ADMIN — PASSWORD MODAL
+═══════════════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.65);
+  backdrop-filter: blur(6px); z-index: 1000;
+  display: none; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--modal-bg); border: 1px solid var(--sep);
+  border-radius: 16px; padding: 32px; width: 380px; max-width: 90vw;
+  box-shadow: 0 24px 64px rgba(0,0,0,.5);
+  transition: background .2s, border-color .2s;
+}
+.modal-icon { font-size: 28px; margin-bottom: 16px; }
+.modal-title { font-size: 18px; font-weight: 800; letter-spacing: -.3px; margin-bottom: 6px; color: var(--ink); }
+.modal-sub { font-size: 13px; color: var(--ink2); margin-bottom: 24px; }
+.modal-input {
+  width: 100%; padding: 12px 14px; border: 1px solid var(--sep);
+  border-radius: var(--rsm); font-size: 15px; font-family: inherit;
+  color: var(--ink); background: var(--modal-input-bg); outline: none;
+  letter-spacing: .05em; margin-bottom: 8px;
+  transition: background .2s, border-color .2s, color .2s;
+}
+.modal-input:focus { border-color: #6366F1; box-shadow: 0 0 0 2px rgba(99,102,241,.15); }
+.modal-error { font-size: 12px; color: var(--red); height: 16px; margin-bottom: 12px; }
+.modal-input.shake { animation: shake .3s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+.modal-actions { display: flex; gap: 8px; }
+.btn-modal-cancel {
+  flex: 1; padding: 11px; background: var(--card2);
+  border: 1px solid var(--sep); border-radius: var(--rsm);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  font-family: inherit; color: var(--ink2);
+}
+.btn-modal-ok {
+  flex: 2; padding: 11px; background: #6366F1; color: #fff;
+  border: none; border-radius: var(--rsm); font-size: 13px;
+  font-weight: 700; cursor: pointer; font-family: inherit;
+}
+.btn-modal-ok:hover { background: #4F46E5; }
+
+/* ═══════════════════════════════════════
+   ADMIN PANEL — always dark
+═══════════════════════════════════════ */
+#admin-panel { display: none; margin-bottom: 32px; }
+#admin-panel.open { display: block; }
+.admin-wrap { background: #09090F; border-radius: 16px; padding: 28px; border: 1px solid #1E1E2A; }
+.admin-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+.admin-title-row { display: flex; align-items: center; gap: 10px; }
+.admin-title { font-size: 15px; font-weight: 800; color: #FFFFFF; }
+.admin-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; background: #1E1E2A; color: #6366F1; border-radius: 20px; letter-spacing: .06em; text-transform: uppercase; }
+.btn-admin-close { background: #1E1E2A; border: none; color: #71717A; border-radius: var(--rsm); padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-admin-close:hover { background: #27272A; color: #fff; }
+.admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.admin-full { grid-column: span 2; }
+.a-sec { background: #111118; border-radius: var(--rsm); padding: 18px; border: 1px solid #1E1E2A; }
+.a-sec-title { font-size: 10px; font-weight: 700; color: #52525B; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 14px; }
+.af { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.af:last-child { margin-bottom: 0; }
+.af label { font-size: 11px; color: #52525B; font-weight: 500; }
+.af input, .af select, .af textarea { background: #09090F; border: 1px solid #27272A; border-radius: var(--rsm); padding: 8px 10px; color: #E4E4E7; font-size: 13px; font-family: inherit; outline: none; }
+.af input:focus, .af select:focus { border-color: #6366F1; }
+.af textarea { resize: vertical; min-height: 55px; }
+.af-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.af-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.btn-add-rec { width: 100%; padding: 10px; background: #6366F1; color: #fff; border: none; border-radius: var(--rsm); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 4px; }
+.btn-add-rec:hover { background: #4F46E5; }
+.add-fb { font-size: 12px; color: #4ADE80; height: 18px; margin-top: 4px; }
+.presets-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.preset-chip { display: flex; align-items: center; gap: 4px; background: #09090F; border: 1px solid #27272A; border-radius: 20px; padding: 3px 10px; font-size: 12px; color: #A1A1AA; }
+.preset-rm { background: none; border: none; color: #F87171; cursor: pointer; font-size: 14px; padding: 0 2px; line-height: 1; }
+.preset-add-row { display: flex; gap: 6px; }
+.preset-add-row input { flex: 1; }
+.btn-preset-add { padding: 7px 12px; background: #27272A; color: #E4E4E7; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-preset-add:hover { background: #6366F1; color: #fff; }
+.slider-row { display: flex; align-items: center; gap: 10px; }
+.slider-row input[type=range] { flex: 1; accent-color: #6366F1; }
+.slider-val { font-size: 18px; font-weight: 800; color: #FFFFFF; min-width: 44px; }
+.a-calc { font-size: 12px; color: #52525B; margin-top: 10px; line-height: 1.7; }
+.a-calc span { color: #A1A1AA; }
+.admin-tbl-wrap { overflow-x: auto; }
+.admin-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
+.admin-tbl th { text-align: left; padding: 6px 8px; color: #52525B; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid #1E1E2A; }
+.admin-tbl td { padding: 6px 8px; border-bottom: 1px solid #111118; vertical-align: middle; color: #A1A1AA; }
+.admin-tbl tr:hover td { background: #0F0F18; }
+.admin-tbl input, .admin-tbl select { background: #09090F; border: 1px solid #27272A; border-radius: 4px; padding: 4px 7px; color: #E4E4E7; font-size: 12px; font-family: inherit; width: 100%; }
+.btn-del { background: none; border: none; color: #F87171; cursor: pointer; font-size: 14px; padding: 2px 5px; }
+.btn-del:hover { color: #EF4444; }
+.admin-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; flex-wrap: wrap; gap: 8px; }
+.admin-footer-btns { display: flex; gap: 8px; }
+.btn-exp { padding: 7px 14px; background: #1E1E2A; color: #A1A1AA; border: 1px solid #27272A; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-exp:hover { background: #6366F1; color: #fff; border-color: #6366F1; }
+.btn-clr { padding: 7px 14px; background: none; color: #F87171; border: 1px solid #27272A; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-clr:hover { background: #2D0D0D; }
+.admin-hint { font-size: 11px; color: #3F3F46; }
+.empty-state { text-align: center; padding: 28px; color: var(--ink3); font-size: 13px; }
+
+/* ── Responsive ── */
+@media(max-width:900px){
+  .kpi-row{grid-template-columns:1fr 1fr}
+  .charts-row{grid-template-columns:1fr}
+  .insights-row{grid-template-columns:1fr}
+  .hero-inner{flex-direction:column;align-items:flex-start}
+  .hero-right{flex-direction:row}
+  .savez-body.open{grid-template-columns:1fr 1fr}
+  .admin-grid{grid-template-columns:1fr}
+  .admin-full{grid-column:span 1}
+  .kpi-card:first-child{border-radius:var(--r) var(--r) 0 0}
+  .kpi-card:last-child{border-radius:0 0 var(--r) var(--r)}
+}
+@media(max-width:580px){
+  .kpi-row{grid-template-columns:1fr}
+  .hero-num{font-size:40px}
+  .savez-body.open{grid-template-columns:1fr}
+  .dp-grid{grid-template-columns:1fr 1fr}
+  .hero-actions{flex-wrap:wrap}
+}
+@media print{
+  .hero{padding:24px}
+  .filters,.btn,.btn-theme,#admin-panel,.modal-overlay,.savez-toggle{display:none!important}
+  .dp{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow">Pipeline Commercial · Lisam × Hike Up · 26 mars 2026</div>
+      <div class="hero-num" id="h-arr">216 000 €<span>ARR</span></div>
+      <div class="hero-sub" id="h-sub">18 dossiers actifs · Réponses email uniquement · Aucun calling initié</div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat">
+        <div class="hero-stat-label">LTV Pipeline</div>
+        <div class="hero-stat-val teal" id="h-ltv">1 080 000 €</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Opportunités</div>
+        <div class="hero-stat-val acc" id="h-opps">6</div>
+      </div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Leads</div>
+        <div class="hero-stat-val" id="h-leads">12</div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-theme" id="theme-btn" onclick="toggleTheme()" title="Changer de thème">
+          <span id="theme-icon">☀️</span>
+          <span id="theme-label">Mode clair</span>
+        </button>
+        <button class="btn btn-ghost" id="admin-btn" onclick="openAdminModal()">⚙</button>
+        <button class="btn btn-ghost" onclick="window.print()">↗ PDF</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ CONTEXT BAND ═══ -->
+<div class="ctx-band">
+  <div class="ctx-band-inner">
+    <div class="ctx-pill"><div class="ctx-pill-dot amber"></div>Réponses email uniquement — aucun cold/warm calling initié</div>
+    <div class="ctx-pill"><div class="ctx-pill-dot green"></div>Projet pilote Hike Up — Phase de cold call pour évaluer le marché, en interne pour ne pas mobiliser les ressources Lisam.</div>
+    <div class="ctx-pill"><div class="ctx-pill-dot acc"></div>Export 26 mars 2026</div>
+  </div>
+</div>
+
+<!-- ═══ PASSWORD MODAL ═══ -->
+<div class="modal-overlay" id="pw-modal">
+  <div class="modal-box">
+    <div class="modal-icon">🔒</div>
+    <div class="modal-title">Accès administrateur</div>
+    <div class="modal-sub">Saisissez le mot de passe pour accéder au panneau de gestion.</div>
+    <input class="modal-input" type="password" id="pw-input" placeholder="Mot de passe" onkeydown="if(event.key==='Enter')checkPassword()">
+    <div class="modal-error" id="pw-error"></div>
+    <div class="modal-actions">
+      <button class="btn-modal-cancel" onclick="closeAdminModal()">Annuler</button>
+      <button class="btn-modal-ok" onclick="checkPassword()">Accéder →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADMIN PANEL ═══ -->
+<div id="admin-panel">
+<div class="wrap" style="padding-bottom:0">
+<div class="admin-wrap">
+  <div class="admin-head">
+    <div class="admin-title-row">
+      <span class="admin-title">Administration</span>
+      <span class="admin-badge">Protected</span>
+    </div>
+    <button class="btn-admin-close" onclick="closeAdminPanel()">✕ Fermer</button>
+  </div>
+  <div class="admin-grid">
+    <div class="a-sec">
+      <div class="a-sec-title">Paniers ARR disponibles</div>
+      <div class="presets-row" id="presets-list"></div>
+      <div class="preset-add-row">
+        <input type="number" id="new-preset" placeholder="Ex: 18000" min="0" step="1000">
+        <button class="btn-preset-add" onclick="addPreset()">+ Ajouter</button>
+      </div>
+    </div>
+    <div class="a-sec">
+      <div class="a-sec-title">Paramètres LTV</div>
+      <div class="af">
+        <label>Taux de rétention</label>
+        <div class="slider-row">
+          <input type="range" id="ret-slider" min="50" max="99" value="80" oninput="updateRet(this.value)">
+          <span class="slider-val" id="ret-display">80%</span>
+        </div>
+      </div>
+      <div class="a-calc">
+        <span>Churn :</span> <strong id="churn-d" style="color:#F87171">20%</strong> &nbsp;·&nbsp;
+        <span>Mult. LTV :</span> <strong id="mult-d" style="color:#4ADE80">5×</strong><br>
+        <span>LTV / dossier (12k€) :</span> <strong id="ltv-ref-d" style="color:#818CF8">60 000 €</strong>
+      </div>
+    </div>
+    <div class="a-sec admin-full">
+      <div class="a-sec-title">Ajouter un dossier</div>
+      <div class="af-row3">
+        <div class="af"><label>Type</label>
+          <select id="fn-entity"><option value="lead">Lead</option><option value="opportunity">Opportunité</option></select>
+        </div>
+        <div class="af"><label>Statut</label>
+          <select id="fn-status">
+            <option>A appeler</option><option>Deuxième tentative d'appel</option>
+            <option>En attente</option><option>Nouveau</option>
+            <option>Rendez-vous prévu</option><option>Devis/Offre envoyé</option>
+          </select>
+        </div>
+        <div class="af"><label>Montant ARR</label><select id="fn-amount"></select></div>
+      </div>
+      <div class="af-row3">
+        <div class="af"><label>Entreprise</label><input type="text" id="fn-co" placeholder="Nom de l'entreprise"></div>
+        <div class="af"><label>Prénom</label><input type="text" id="fn-fn" placeholder="Prénom"></div>
+        <div class="af"><label>Nom</label><input type="text" id="fn-ln" placeholder="Nom de famille"></div>
+      </div>
+      <div class="af-row3">
+        <div class="af"><label>Produit cible</label>
+          <select id="fn-prod">
+            <option value="">—</option><option>ExESS</option><option>ComplyStation</option>
+            <option>Publichem</option><option>EcoMundo</option>
+          </select>
+        </div>
+        <div class="af"><label>HubSpot</label>
+          <select id="fn-hs">
+            <option>New</option><option>Connected</option><option>Connected (à relancer)</option>
+            <option>Connected (demande démo)</option><option>Proposal</option><option>(à relancer)</option>
+          </select>
+        </div>
+        <div class="af"><label>Date création</label><input type="date" id="fn-date"></div>
+      </div>
+      <div class="af"><label>Notes</label><textarea id="fn-note" placeholder="Commentaires…"></textarea></div>
+      <button class="btn-add-rec" onclick="addRecord()">+ Ajouter ce dossier</button>
+      <div class="add-fb" id="add-fb"></div>
+    </div>
+    <div class="a-sec admin-full">
+      <div class="a-sec-title">Modifier · Supprimer</div>
+      <div class="admin-tbl-wrap">
+        <table class="admin-tbl">
+          <thead><tr>
+            <th>Type</th><th>Entreprise</th><th>Statut</th><th>Produit</th><th>ARR</th><th>Date</th><th></th>
+          </tr></thead>
+          <tbody id="admin-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="admin-footer">
+    <div class="admin-hint">Modifications en temps réel · Ouvrez ce fichier dans un éditeur pour l'éditer directement</div>
+    <div class="admin-footer-btns">
+      <button class="btn-exp" onclick="exportJSON()">⬇ Exporter JSON</button>
+      <button class="btn-clr" onclick="clearAll()">Vider le pipeline</button>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="wrap">
+
+  <div class="ltv-strip">
+    <div class="ltv-strip-text">
+      Valeurs en <strong>ARR (Annual Recurring Revenue)</strong>. Rétention estimée à
+      <strong id="ltv-s-ret">80 %</strong> → LTV par dossier : <strong id="ltv-s-val">60 000 €</strong>
+    </div>
+    <div class="ltv-formula" id="ltv-s-formula">LTV = 12 000 € ÷ 20 % = 60 000 €</div>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Pipeline total <span class="kpi-tag arr">ARR</span></div>
+      <div class="kpi-val" id="kpi-arr">—</div>
+      <div class="kpi-sub" id="kpi-arr-s">—</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Valeur vie totale <span class="kpi-tag ltv">LTV</span></div>
+      <div class="kpi-val" id="kpi-ltv">—</div>
+      <div class="kpi-sub">Rét. <span id="kpi-ret-s">80%</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Opportunités <span class="kpi-tag arr">ARR</span></div>
+      <div class="kpi-val" id="kpi-opps">—</div>
+      <div class="kpi-sub" id="kpi-opps-s">—</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Leads <span class="kpi-tag arr">ARR</span></div>
+      <div class="kpi-val" id="kpi-leads">—</div>
+      <div class="kpi-sub" id="kpi-leads-s">—</div>
+    </div>
+  </div>
+
+  <div class="section-gap">
+    <div class="charts-row">
+      <div class="card">
+        <div class="card-title">Entonnoir par statut</div>
+        <div id="funnel" class="funnel"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">ARR par produit</div>
+        <div style="position:relative;height:180px"><canvas id="chartProd"></canvas></div>
+        <div class="leg" id="leg-prod"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Dossiers</div>
+  <div class="filters">
+    <div class="fg">
+      <label>Type</label>
+      <select id="f-ent" onchange="applyFilters()">
+        <option value="">Tous</option>
+        <option value="lead">Leads</option>
+        <option value="opportunity">Opportunités</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Produit</label>
+      <select id="f-prod" onchange="applyFilters()">
+        <option value="">Tous</option>
+        <option value="ExESS">ExESS</option>
+        <option value="ComplyStation">ComplyStation</option>
+        <option value="Publichem">Publichem</option>
+        <option value="EcoMundo">EcoMundo</option>
+        <option value="nc">Non renseigné</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>HubSpot</label>
+      <select id="f-hs" onchange="applyFilters()">
+        <option value="">Tous</option>
+        <option value="New">New</option>
+        <option value="Connected">Connected</option>
+        <option value="Proposal">Proposal</option>
+      </select>
+    </div>
+    <div class="fg wide">
+      <label>Recherche</label>
+      <input type="text" id="f-q" placeholder="Entreprise, contact…" oninput="applyFilters()">
+    </div>
+    <button class="btn-reset" onclick="resetF()">✕</button>
+    <span class="res-tag" id="res-tag"></span>
+  </div>
+
+  <div class="tcard">
+    <div class="tcard-head">
+      <h2>Tous les dossiers (<span id="tbl-n">0</span>)</h2>
+      <span style="font-size:11px;color:var(--ink3)">Cliquez pour le détail</span>
+    </div>
+    <table>
+      <thead><tr>
+        <th onclick="srt('entity')" id="th-e">Type <span class="si">↕</span></th>
+        <th onclick="srt('company')" id="th-c">Entreprise <span class="si">↕</span></th>
+        <th onclick="srt('contact')" id="th-ct">Contact <span class="si">↕</span></th>
+        <th onclick="srt('status')" id="th-s">Statut <span class="si">↕</span></th>
+        <th onclick="srt('product')" id="th-p">Produit <span class="si">↕</span></th>
+        <th onclick="srt('hubspot')" id="th-h">HubSpot <span class="si">↕</span></th>
+        <th onclick="srt('date')" id="th-d">Date <span class="si">↕</span></th>
+        <th onclick="srt('amount')" id="th-a" class="th-r">ARR <span class="si">↕</span></th>
+        <th class="th-r" style="color:var(--teal)">LTV</th>
+      </tr></thead>
+      <tbody id="tbl-body"></tbody>
+    </table>
+    <div class="empty-state" id="tbl-empty" style="display:none">Aucun résultat.</div>
+  </div>
+
+  <div class="dp" id="dp">
+    <div class="dp-head">
+      <div>
+        <div class="dp-co" id="dp-co"></div>
+        <div class="dp-ct" id="dp-ct"></div>
+      </div>
+      <button class="dp-close" onclick="closeDP()">✕</button>
+    </div>
+    <div class="dp-ltv-row" id="dp-ltv-row"></div>
+    <div class="dp-grid">
+      <div class="dp-f"><label>Type</label><span id="dp-ent"></span></div>
+      <div class="dp-f"><label>Statut</label><span id="dp-st"></span></div>
+      <div class="dp-f"><label>ARR annuel</label><span id="dp-arr"></span></div>
+      <div class="dp-f"><label>LTV estimée</label><span id="dp-ltv" style="color:var(--teal);font-weight:700"></span></div>
+      <div class="dp-f"><label>Produit</label><span id="dp-prod"></span></div>
+      <div class="dp-f"><label>HubSpot</label><span id="dp-hs"></span></div>
+      <div class="dp-f"><label>Date création</label><span id="dp-date"></span></div>
+      <div class="dp-f"><label>LinkedIn contact</label><span id="dp-li"></span></div>
+      <div class="dp-f"><label>LinkedIn société</label><span id="dp-lico"></span></div>
+    </div>
+    <div style="font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3);margin-bottom:6px">Notes</div>
+    <div class="dp-note" id="dp-note"></div>
+  </div>
+
+  <div class="section-label">Points clés</div>
+  <div class="insights-row section-gap">
+    <div class="card icard">
+      <h2>Attention requise</h2>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--red)"></div>
+        <div><div class="ii-t">CILcare — offre sans retour</div><div class="ii-b">Offre ExESS envoyée sem. du 9 fév. Plus de 6 semaines sans réponse. LTV : 60 000 €.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--red)"></div>
+        <div><div class="ii-t">Gaches Chimie — 3 échecs (2016, 2019, 2021)</div><div class="ii-b">Démo prévue le 27/3. Surveiller de près le résultat.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--amber)"></div>
+        <div><div class="ii-t">Akkodis — deadline 10 avril</div><div class="ii-b">RDV annulé le 17/3. Sans contact avant le 10/4 → disqualification.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--amber)"></div>
+        <div><div class="ii-t">Safran — sans réponse aux créneaux proposés</div><div class="ii-b">Nouvelles dates envoyées : 31 mars &amp; 1er avril.</div></div>
+      </div>
+    </div>
+    <div class="card icard">
+      <h2>Actions recommandées</h2>
+      <div class="ii">
+        <div class="ii-dot" style="background:#6366F1"></div>
+        <div><div class="ii-t">Lancer la stratégie calling</div><div class="ii-b">Pipeline 100 % email à ce jour. Cold &amp; warm calling = fort multiplicateur potentiel.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--green)"></div>
+        <div><div class="ii-t">Sanofi → EcoMundo</div><div class="ii-b">Besoin = digitalisation labo, hors périmètre ExESS. Transférer.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:#A78BFA"></div>
+        <div><div class="ii-t">Délifrance &amp; YSEIS → ComplyStation</div><div class="ii-b">Profils hors périmètre ExESS. À transférer.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--ink3)"></div>
+        <div><div class="ii-t">22 % sans produit assigné</div><div class="ii-b">4 dossiers (48k€ ARR · 240k€ LTV) sans produit cible renseigné.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="savez-wrap">
+    <div class="savez-toggle" onclick="toggleSavez()">
+      <span>Données de référence — Prospection B2B</span>
+      <span class="savez-toggle-icon" id="savez-icon">▾</span>
+    </div>
+    <div class="savez-body" id="savez-body">
+      <div class="savez-item">
+        <div class="savez-num">21×</div>
+        <div class="savez-claim">plus de conversions si contacté en 5 min vs. 30 min</div>
+        <div class="savez-detail">Réduire le time-to-contact d'un lead de 30 min à 5 min multiplie par 21 les chances de qualification.</div>
+        <div class="savez-src">MIT / InsideSales.com — Harvard Business Review, 2011</div>
+      </div>
+      <div class="savez-item">
+        <div class="savez-num">35–50%</div>
+        <div class="savez-claim">des ventes vont au premier à répondre</div>
+        <div class="savez-detail">En prospection B2B, la réactivité est souvent plus déterminante que le produit ou le prix.</div>
+        <div class="savez-src">InsideSales.com Research — Dr. James Oldroyd</div>
+      </div>
+      <div class="savez-item">
+        <div class="savez-num">82%</div>
+        <div class="savez-claim">des acheteurs B2B acceptent un RDV avec un commercial proactif</div>
+        <div class="savez-detail">La prospection sortante reste très efficace lorsqu'elle est personnalisée et contextualisée.</div>
+        <div class="savez-src">Rain Group — Top Performance in Sales Prospecting, 2018</div>
+      </div>
+      <div class="savez-item">
+        <div class="savez-num">44%</div>
+        <div class="savez-claim">abandonnent après 1 seul suivi — 80% des ventes nécessitent 5+</div>
+        <div class="savez-detail">La persistance est la clé. Seuls 8% des commerciaux font les 5 relances nécessaires.</div>
+        <div class="savez-src">Brevet Group / Marketing Donut</div>
+      </div>
+      <div class="savez-item">
+        <div class="savez-num">+95%</div>
+        <div class="savez-claim">de profits avec seulement +5% de rétention</div>
+        <div class="savez-detail">Fidéliser coûte 5 à 7× moins cher qu'acquérir. Un gain marginal de rétention a un impact exponentiel.</div>
+        <div class="savez-src">Frederick Reichheld, Bain &amp; Company — HBR, 2000</div>
+      </div>
+      <div class="savez-item">
+        <div class="savez-num">8</div>
+        <div class="savez-claim">tentatives pour joindre un prospect en cold calling</div>
+        <div class="savez-detail">90% des prospects sont joints par ceux qui persistent jusqu'à 8 tentatives. La majorité s'arrête à 2.</div>
+        <div class="savez-src">Telenet &amp; Ovation Sales Group</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- .wrap -->
+
+<script>
+/* ═══════════════════════════════════════
+   DATA & STATE
+═══════════════════════════════════════ */
+const ADMIN_PW = 'Hikeupmgm';
+let CHURN = 0.20, LTV_M = 5;
+let ARR_P = [12000, 24000, 36000, 48000];
+let nid = 19;
+
+let DATA = [
+  {id:1,  entity:'lead',        status:'A appeler',                   product:'',             hubspot:'New',                     company:'Apave',                    firstName:'Tristan',    lastName:'Perron',         amount:12000, date:'2026-03-26', linkedin:'https://www.linkedin.com/in/ACwAACC_U8EBUy6aNfqbLnIhxzbKbvnHSCi02zA/', linkedinCo:'https://www.linkedin.com/company/715602', comment:''},
+  {id:2,  entity:'lead',        status:'A appeler',                   product:'',             hubspot:'New',                     company:'Vulcain Engineering Group',  firstName:'Fabrice',    lastName:'Garabello',      amount:12000, date:'2026-11-03', linkedin:'', linkedinCo:'', comment:'@Thierry Des nouvelles de lui ?'},
+  {id:3,  entity:'lead',        status:"Deuxième tentative d'appel",  product:'ExESS',        hubspot:'New',                     company:'UFCC',                     firstName:'Abdelaziz',  lastName:'Chadi',           amount:12000, date:'2026-03-17', linkedin:'https://www.linkedin.com/in/abdelaziz-chadi-5288b612a/', linkedinCo:'', comment:'Email 18 mars. A+ Dominique'},
+  {id:4,  entity:'lead',        status:'En attente',                  product:'Publichem',    hubspot:'Connected',               company:'ELECTRICITE VEIT',          firstName:'Nicolas',    lastName:'Undreiner',      amount:12000, date:'2026-02-18', linkedin:'', linkedinCo:'https://www.linkedin.com/company/25502497', comment:'50 FDS max. Envoi plaquette Publichem.'},
+  {id:5,  entity:'lead',        status:'En attente',                  product:'',             hubspot:'Connected (à relancer)',   company:'Safran',                   firstName:'Lucy',       lastName:'Duhamel',        amount:12000, date:'2026-02-20', linkedin:'', linkedinCo:'https://www.linkedin.com/company/521777', comment:'Relance avec nouvelles dates : 31 mars et 1er avril.'},
+  {id:6,  entity:'lead',        status:'En attente',                  product:'ComplyStation', hubspot:'Connected',              company:'Délifrance',                firstName:'Jacques',    lastName:'Duquesne',       amount:12000, date:'2026-02-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/40544', comment:'Fabricant surgelé. Transfert ComplyStation ?'},
+  {id:7,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'BEILLARD TUBES CARTON',     firstName:'Emilie',     lastName:'Richard',        amount:12000, date:'2026-05-03', linkedin:'', linkedinCo:'', comment:'Reprendre contact fin année.'},
+  {id:8,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'Greif Plastics Lille',      firstName:'Stéphane',   lastName:'Sellier',        amount:12000, date:'2026-03-10', linkedin:'', linkedinCo:'', comment:'Reprendre contact juin 2026.'},
+  {id:9,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'Akkodis',                  firstName:'Séphora',    lastName:'Lafi Derradji',  amount:12000, date:'2026-02-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/79383535', comment:'RDV annulé 17/3. Deadline 10/4.'},
+  {id:10, entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'(à relancer)',             company:'Kadans Science Partner',    firstName:'Stelina',    lastName:'Loiodice',       amount:12000, date:'2026-03-16', linkedin:'', linkedinCo:'https://www.linkedin.com/company/2066318', comment:'À relancer.'},
+  {id:11, entity:'lead',        status:'En attente',                  product:'EcoMundo',     hubspot:'Connected (demande démo)', company:'Sanofi',                   firstName:'Vincent',    lastName:'Hochard Fatela', amount:12000, date:'2026-01-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/1642', comment:'Transférer équipes EcoMundo.'},
+  {id:12, entity:'lead',        status:'En attente',                  product:'ComplyStation', hubspot:'Connected',              company:'YSEIS',                     firstName:'Mahamadou',  lastName:'Diagouraga',     amount:12000, date:'2026-02-24', linkedin:'', linkedinCo:'https://www.linkedin.com/company/10138540', comment:'Voir ComplyStation 2.'},
+  {id:13, entity:'opportunity', status:'Devis/Offre envoyé',          product:'ExESS',        hubspot:'Proposal',                company:'CILcare',                   firstName:'Philippe',   lastName:'Larroze-Chicot', amount:12000, date:'2026-02-06', linkedin:'', linkedinCo:'https://fr.linkedin.com/company/cilcare', comment:'Offre envoyée sem. 9/02. Aucun retour >6 semaines.'},
+  {id:14, entity:'opportunity', status:'Nouveau',                     product:'',             hubspot:'New',                     company:'LA-CO Industries Europe',   firstName:'Mélanie',    lastName:'Pouzet',         amount:12000, date:'2026-03-23', linkedin:'', linkedinCo:'', comment:'À appeler.'},
+  {id:15, entity:'opportunity', status:'Nouveau',                     product:'ExESS',        hubspot:'New',                     company:'Curium Pharma',             firstName:'Christophe', lastName:'Gosselin',       amount:12000, date:'2026-03-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/16268747', comment:'RDV proposé vendredi 10h.'},
+  {id:16, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Gaches Chimie Spécialités', firstName:'Pierre',     lastName:'Gaches',         amount:12000, date:'2026-02-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/groupe-gaches-chimie/', comment:'3 échecs précédents. Démo 27/3.'},
+  {id:17, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Parfex',                    firstName:'Hélène',     lastName:'Parent',         amount:12000, date:'2026-02-05', linkedin:'', linkedinCo:'', comment:'Démo effectuée 04/03.'},
+  {id:18, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Salveco',                   firstName:'Alexandre',  lastName:'Laygnez',        amount:12000, date:'2026-02-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/salveco-fr/', comment:''},
+];
+
+let filtered = [...DATA];
+let sKey = 'date', sDir = 1, selRow = null, chart = null;
+const SO = {'Devis/Offre envoyé':0,'Rendez-vous prévu':1,"Deuxième tentative d'appel":2,'Nouveau':3,'En attente':4,'A appeler':5};
+const fmt = n => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
+const fd  = d => { const p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0].slice(2); };
+const ltv = a => a * LTV_M;
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function sCls(s){ return s==='A appeler'?'b-s0':s.includes('tentative')?'b-s1':s==='En attente'?'b-s2':s==='Nouveau'?'b-s3':s.includes('Rendez')?'b-s4':'b-s5'; }
+function pCls(p){ return p==='ExESS'?'b-pe':p==='ComplyStation'?'b-pc':p==='Publichem'?'b-pp':p==='EcoMundo'?'b-pm':'b-pn'; }
+
+/* ═══════════════════════════════════════
+   THEME TOGGLE
+═══════════════════════════════════════ */
+function isDark(){ return document.documentElement.getAttribute('data-theme')==='dark'; }
+
+function applyThemeUI(){
+  const dark = isDark();
+  document.getElementById('theme-icon').textContent  = dark ? '☀️' : '🌙';
+  document.getElementById('theme-label').textContent = dark ? 'Mode clair' : 'Mode sombre';
+}
+
+function toggleTheme(){
+  const next = isDark() ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  try { localStorage.setItem('theme', next); } catch(e){}
+  applyThemeUI();
+  renderFunnel();   // re-render with theme-appropriate colours
+  renderChart();
+}
+
+function initTheme(){
+  let saved = 'dark';
+  try { saved = localStorage.getItem('theme') || 'dark'; } catch(e){}
+  document.documentElement.setAttribute('data-theme', saved);
+  applyThemeUI();
+}
+
+/* ═══════════════════════════════════════
+   ADMIN MODAL
+═══════════════════════════════════════ */
+function openAdminModal(){
+  document.getElementById('pw-modal').classList.add('open');
+  document.getElementById('pw-input').value='';
+  document.getElementById('pw-error').textContent='';
+  setTimeout(()=>document.getElementById('pw-input').focus(),100);
+}
+function closeAdminModal(){ document.getElementById('pw-modal').classList.remove('open'); }
+function checkPassword(){
+  const val = document.getElementById('pw-input').value;
+  if(val === ADMIN_PW){ closeAdminModal(); openAdminPanel(); }
+  else {
+    document.getElementById('pw-error').textContent='Mot de passe incorrect.';
+    const inp=document.getElementById('pw-input');
+    inp.classList.add('shake'); inp.value='';
+    setTimeout(()=>inp.classList.remove('shake'),400);
+  }
+}
+function openAdminPanel(){
+  document.getElementById('admin-btn').classList.add('btn-acc');
+  document.getElementById('admin-btn').classList.remove('btn-ghost');
+  document.getElementById('admin-panel').classList.add('open');
+  renderPresets(); renderAdminTable();
+  document.getElementById('fn-date').value=new Date().toISOString().split('T')[0];
+  document.getElementById('admin-panel').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function closeAdminPanel(){
+  document.getElementById('admin-panel').classList.remove('open');
+  document.getElementById('admin-btn').classList.remove('btn-acc');
+  document.getElementById('admin-btn').classList.add('btn-ghost');
+}
+
+/* ═══════════════════════════════════════
+   RETENTION
+═══════════════════════════════════════ */
+function updateRet(v){
+  const r=parseInt(v); CHURN=(100-r)/100; LTV_M=Math.round(1/CHURN*10)/10;
+  document.getElementById('ret-display').textContent=r+'%';
+  document.getElementById('churn-d').textContent=(100-r)+'%';
+  document.getElementById('mult-d').textContent=LTV_M+'×';
+  const ref=ARR_P[0]||12000;
+  document.getElementById('ltv-ref-d').textContent=fmt(ltv(ref));
+  document.getElementById('ltv-s-ret').textContent=r+' %';
+  document.getElementById('ltv-s-val').textContent=fmt(ltv(ref));
+  document.getElementById('ltv-s-formula').innerHTML=`LTV = ${fmt(ref)} ÷ ${100-r} % = ${fmt(ltv(ref))}`;
+  document.getElementById('kpi-ret-s').textContent=r+'%';
+  renderAll();
+}
+
+/* ═══════════════════════════════════════
+   PRESETS
+═══════════════════════════════════════ */
+function renderPresets(){
+  document.getElementById('presets-list').innerHTML=ARR_P.map((v,i)=>
+    `<div class="preset-chip">${fmt(v)}<button class="preset-rm" onclick="rmPreset(${i})">×</button></div>`).join('');
+  const sel=document.getElementById('fn-amount');
+  if(sel) sel.innerHTML=ARR_P.map(v=>`<option value="${v}">${fmt(v)}</option>`).join('');
+}
+function addPreset(){
+  const v=parseInt(document.getElementById('new-preset').value);
+  if(!v||v<=0) return;
+  if(!ARR_P.includes(v)) ARR_P.push(v);
+  ARR_P.sort((a,b)=>a-b);
+  document.getElementById('new-preset').value='';
+  renderPresets();
+}
+function rmPreset(i){ if(ARR_P.length<=1) return; ARR_P.splice(i,1); renderPresets(); }
+
+/* ═══════════════════════════════════════
+   RECORDS
+═══════════════════════════════════════ */
+function addRecord(){
+  const co=document.getElementById('fn-co').value.trim();
+  if(!co){ alert('Entreprise requise'); return; }
+  DATA.push({
+    id:nid++,
+    entity: document.getElementById('fn-entity').value,
+    status: document.getElementById('fn-status').value,
+    product:document.getElementById('fn-prod').value,
+    hubspot:document.getElementById('fn-hs').value,
+    company:co,
+    firstName:document.getElementById('fn-fn').value.trim(),
+    lastName: document.getElementById('fn-ln').value.trim(),
+    amount: parseInt(document.getElementById('fn-amount').value)||ARR_P[0],
+    date:   document.getElementById('fn-date').value||new Date().toISOString().split('T')[0],
+    linkedin:'', linkedinCo:'',
+    comment:document.getElementById('fn-note').value.trim()
+  });
+  ['fn-co','fn-fn','fn-ln','fn-note'].forEach(id=>document.getElementById(id).value='');
+  const fb=document.getElementById('add-fb');
+  fb.textContent=`✓ "${co}" ajouté`;
+  setTimeout(()=>fb.textContent='',3000);
+  renderAdminTable(); applyFilters();
+}
+function renderAdminTable(){
+  const tb=document.getElementById('admin-tbody'); if(!tb) return;
+  tb.innerHTML=DATA.map(r=>`<tr>
+    <td><select onchange="ef(${r.id},'entity',this.value)">
+      <option ${r.entity==='lead'?'selected':''} value="lead">Lead</option>
+      <option ${r.entity==='opportunity'?'selected':''} value="opportunity">Opport.</option>
+    </select></td>
+    <td><input type="text" value="${esc(r.company)}" onchange="ef(${r.id},'company',this.value)" style="min-width:130px"></td>
+    <td><select onchange="ef(${r.id},'status',this.value)" style="min-width:120px">
+      ${['A appeler',"Deuxième tentative d'appel",'En attente','Nouveau','Rendez-vous prévu','Devis/Offre envoyé'].map(s=>`<option ${r.status===s?'selected':''}>${s}</option>`).join('')}
+    </select></td>
+    <td><select onchange="ef(${r.id},'product',this.value)">
+      <option value="" ${!r.product?'selected':''}>—</option>
+      ${['ExESS','ComplyStation','Publichem','EcoMundo'].map(p=>`<option ${r.product===p?'selected':''}>${p}</option>`).join('')}
+    </select></td>
+    <td><select onchange="ef(${r.id},'amount',parseInt(this.value))">
+      ${ARR_P.map(v=>`<option value="${v}" ${r.amount===v?'selected':''}>${fmt(v)}</option>`).join('')}
+      ${!ARR_P.includes(r.amount)?`<option value="${r.amount}" selected>${fmt(r.amount)}</option>`:''}
+    </select></td>
+    <td><input type="date" value="${r.date}" onchange="ef(${r.id},'date',this.value)" style="min-width:110px"></td>
+    <td><button class="btn-del" onclick="delRec(${r.id})">🗑</button></td>
+  </tr>`).join('');
+}
+function ef(id,k,v){ const r=DATA.find(x=>x.id===id); if(r){r[k]=v; applyFilters();} }
+function delRec(id){ if(confirm('Supprimer ?')){DATA=DATA.filter(r=>r.id!==id); renderAdminTable(); applyFilters();} }
+function clearAll(){ if(confirm('Vider le pipeline ?')){DATA=[];renderAdminTable();applyFilters();} }
+function exportJSON(){ const b=new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'}); const u=URL.createObjectURL(b); const a=document.createElement('a'); a.href=u;a.download='pipeline.json';a.click();URL.revokeObjectURL(u); }
+
+/* ═══════════════════════════════════════
+   FILTERS & SORT
+═══════════════════════════════════════ */
+function applyFilters(){
+  const e=document.getElementById('f-ent').value;
+  const p=document.getElementById('f-prod').value;
+  const h=document.getElementById('f-hs').value;
+  const q=document.getElementById('f-q').value.toLowerCase().trim();
+  filtered=DATA.filter(r=>{
+    if(e&&r.entity!==e) return false;
+    if(p==='nc'){if(r.product!=='') return false;}
+    else if(p&&r.product!==p) return false;
+    if(h&&!r.hubspot.includes(h)) return false;
+    if(q&&![r.company,r.firstName,r.lastName,r.status,r.product].join(' ').toLowerCase().includes(q)) return false;
+    return true;
+  });
+  srtRender();
+}
+function resetF(){
+  ['f-ent','f-prod','f-hs'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-q').value='';
+  filtered=[...DATA]; srtRender();
+}
+function srt(k){ if(sKey===k)sDir*=-1;else{sKey=k;sDir=1;} srtRender(); }
+function srtRender(){
+  filtered.sort((a,b)=>{
+    if(sKey==='contact') return a.lastName<b.lastName?-sDir:a.lastName>b.lastName?sDir:0;
+    if(sKey==='status') return ((SO[a.status]??99)-(SO[b.status]??99))*sDir;
+    const va=a[sKey]??'',vb=b[sKey]??'';
+    return va<vb?-sDir:va>vb?sDir:0;
+  });
+  renderAll();
+}
+
+/* ═══════════════════════════════════════
+   RENDER
+═══════════════════════════════════════ */
+function renderAll(){ renderHero(); renderKPIs(); renderFunnel(); renderChart(); renderTable(); }
+
+function renderHero(){
+  const arr=filtered.reduce((s,r)=>s+r.amount,0);
+  const opps=filtered.filter(r=>r.entity==='opportunity');
+  const leads=filtered.filter(r=>r.entity==='lead');
+  document.getElementById('h-arr').innerHTML=`${fmt(arr)}<span>ARR</span>`;
+  document.getElementById('h-ltv').textContent=fmt(ltv(arr));
+  document.getElementById('h-opps').textContent=opps.length;
+  document.getElementById('h-leads').textContent=leads.length;
+  document.getElementById('h-sub').textContent=`${filtered.length} dossiers · Réponses email uniquement · Aucun calling initié`;
+}
+
+function renderKPIs(){
+  const arr=filtered.reduce((s,r)=>s+r.amount,0);
+  const opps=filtered.filter(r=>r.entity==='opportunity');
+  const leads=filtered.filter(r=>r.entity==='lead');
+  document.getElementById('kpi-arr').textContent=fmt(arr);
+  document.getElementById('kpi-arr-s').textContent=filtered.length+' dossier'+(filtered.length>1?'s':'');
+  document.getElementById('kpi-ltv').textContent=fmt(ltv(arr));
+  document.getElementById('kpi-opps').textContent=fmt(opps.reduce((s,r)=>s+r.amount,0));
+  document.getElementById('kpi-opps-s').textContent=opps.length+' dossier'+(opps.length>1?'s':'');
+  document.getElementById('kpi-leads').textContent=fmt(leads.reduce((s,r)=>s+r.amount,0));
+  document.getElementById('kpi-leads-s').textContent=leads.length+' dossier'+(leads.length>1?'s':'');
+  document.getElementById('res-tag').textContent=filtered.length+'/'+DATA.length;
+}
+
+function renderFunnel(){
+  const dark = isDark();
+  /* Dark palette: muted · Light palette: saturated & readable */
+  const C = dark ? {
+    'Devis/Offre envoyé':              '#8B3030',
+    'Rendez-vous prévu':               '#5B4A8A',
+    "Deuxième tentative d'appel":      '#3D4580',
+    'Nouveau':                         '#3D4580',
+    'En attente':                      '#7A6020',
+    'A appeler':                       '#1A6045'
+  } : {
+    'Devis/Offre envoyé':              '#DC2626',
+    'Rendez-vous prévu':               '#7C3AED',
+    "Deuxième tentative d'appel":      '#4F46E5',
+    'Nouveau':                         '#4F46E5',
+    'En attente':                      '#D97706',
+    'A appeler':                       '#059669'
+  };
+
+  const g={};
+  filtered.forEach(r=>{ if(!g[r.status])g[r.status]={n:0,a:0}; g[r.status].n++;g[r.status].a+=r.amount; });
+  const mx=Math.max(...Object.values(g).map(x=>x.a),1);
+  const ord=Object.keys(SO).filter(k=>g[k]);
+  const el=document.getElementById('funnel');
+  el.innerHTML='';
+  if(!ord.length){el.innerHTML='<div class="empty-state">—</div>';return;}
+  ord.forEach(s=>{
+    const {n,a}=g[s], pct=Math.round(a/mx*100), col=C[s]||'#71717A';
+    el.innerHTML+=`<div class="f-row">
+      <div class="f-lbl">${s}</div>
+      <div class="f-track"><div class="f-fill" style="width:${pct}%;background:${col}">${pct>20?fmt(a):''}</div></div>
+      <div class="f-meta">${n} · <span style="color:var(--teal)">${fmt(ltv(a))}</span></div>
+    </div>`;
+  });
+  el.innerHTML+=`<div class="f-note">ARR · <span style="color:var(--teal)">LTV (rét. ${Math.round((1-CHURN)*100)}%)</span></div>`;
+}
+
+function renderChart(){
+  const dark = isDark();
+  const g={};
+  filtered.forEach(r=>{ const k=r.product||'N/A'; g[k]=(g[k]||0)+r.amount; });
+  const labels=Object.keys(g), data=Object.values(g);
+  /* Dark: desaturated · Light: vivid */
+  const CP = dark ? {
+    'ExESS':         '#4B50A8',
+    'ComplyStation': '#6248A0',
+    'Publichem':     '#7A6020',
+    'EcoMundo':      '#1A6045',
+    'N/A':           '#2A2A38'
+  } : {
+    'ExESS':         '#6366F1',
+    'ComplyStation': '#8B5CF6',
+    'Publichem':     '#F59E0B',
+    'EcoMundo':      '#10B981',
+    'N/A':           '#D1D5DB'
+  };
+  const bg=labels.map(l=>CP[l]||'#A1A1AA');
+  const tot=data.reduce((a,b)=>a+b,0);
+  if(chart) chart.destroy();
+  chart=new Chart(document.getElementById('chartProd'),{
+    type:'doughnut',
+    data:{labels,datasets:[{data,backgroundColor:bg,borderWidth:0,hoverOffset:4,borderColor:'transparent'}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'70%',
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>[' '+fmt(ctx.raw)+' ('+Math.round(ctx.raw/tot*100)+'%)',' LTV: '+fmt(ltv(ctx.raw))]}}}}
+  });
+  document.getElementById('leg-prod').innerHTML=labels.map((l,i)=>
+    `<div class="leg-row"><div class="leg-left"><div class="leg-dot" style="background:${bg[i]}"></div><span class="leg-name">${l}</span></div><span class="leg-val">${fmt(data[i])}</span></div>`
+  ).join('');
+}
+
+function renderTable(){
+  const tb=document.getElementById('tbl-body');
+  document.getElementById('tbl-n').textContent=filtered.length;
+  document.getElementById('tbl-empty').style.display=filtered.length?'none':'block';
+  document.querySelectorAll('thead th').forEach(t=>t.classList.remove('sorted'));
+  const thm={entity:'th-e',company:'th-c',contact:'th-ct',status:'th-s',product:'th-p',hubspot:'th-h',date:'th-d',amount:'th-a'};
+  if(thm[sKey]){const t=document.getElementById(thm[sKey]);if(t){t.classList.add('sorted');t.querySelector('.si').textContent=sDir===1?'↑':'↓';}}
+  tb.innerHTML=filtered.map((r,i)=>{
+    const pb=r.product?`<span class="badge ${pCls(r.product)}">${r.product}</span>`:`<span class="badge b-pn">—</span>`;
+    const hs=r.hubspot.replace(' (à relancer)','').replace(' (demande démo)','');
+    return `<tr onclick="selRow_f(${i})" class="${selRow===i?'sel':''}">
+      <td><span class="badge ${r.entity==='lead'?'b-lead':'b-opp'}">${r.entity==='lead'?'Lead':'Opp.'}</span></td>
+      <td class="co">${r.company}</td>
+      <td class="ct">${r.firstName} ${r.lastName}</td>
+      <td><span class="badge ${sCls(r.status)}">${r.status}</span></td>
+      <td>${pb}</td>
+      <td class="dt">${hs}</td>
+      <td class="dt">${fd(r.date)}</td>
+      <td class="ra">${fmt(r.amount)}</td>
+      <td class="rltv">${fmt(ltv(r.amount))}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ═══════════════════════════════════════
+   DETAIL PANEL
+═══════════════════════════════════════ */
+function selRow_f(i){
+  const r=filtered[i]; if(!r) return;
+  if(selRow===i){closeDP();return;}
+  selRow=i;
+  document.querySelectorAll('tbody tr').forEach((tr,j)=>tr.classList.toggle('sel',j===i));
+  document.getElementById('dp-co').textContent=r.company;
+  document.getElementById('dp-ct').textContent=r.firstName+' '+r.lastName;
+  document.getElementById('dp-ent').innerHTML=`<span class="badge ${r.entity==='lead'?'b-lead':'b-opp'}">${r.entity==='lead'?'Lead':'Opportunité'}</span>`;
+  document.getElementById('dp-st').innerHTML=`<span class="badge ${sCls(r.status)}">${r.status}</span>`;
+  document.getElementById('dp-arr').textContent=fmt(r.amount)+' / an';
+  document.getElementById('dp-ltv').textContent=fmt(ltv(r.amount));
+  document.getElementById('dp-ltv-row').innerHTML=`ARR <strong>${fmt(r.amount)}</strong> · LTV estimée <strong>${fmt(ltv(r.amount))}</strong> · ${LTV_M}× (rétention ${Math.round((1-CHURN)*100)}%)`;
+  document.getElementById('dp-prod').innerHTML=r.product?`<span class="badge ${pCls(r.product)}">${r.product}</span>`:'—';
+  document.getElementById('dp-hs').textContent=r.hubspot||'—';
+  document.getElementById('dp-date').textContent=fd(r.date);
+  document.getElementById('dp-li').innerHTML=r.linkedin?`<a class="lk" href="${r.linkedin}" target="_blank">Profil →</a>`:'—';
+  document.getElementById('dp-lico').innerHTML=r.linkedinCo?`<a class="lk" href="${r.linkedinCo}" target="_blank">Société →</a>`:'—';
+  document.getElementById('dp-note').textContent=r.comment||'(aucune note)';
+  const dp=document.getElementById('dp');
+  dp.classList.add('open');
+  dp.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function closeDP(){
+  selRow=null;
+  document.querySelectorAll('tbody tr').forEach(tr=>tr.classList.remove('sel'));
+  document.getElementById('dp').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════
+   SAVIEZ-VOUS
+═══════════════════════════════════════ */
+function toggleSavez(){
+  document.getElementById('savez-body').classList.toggle('open');
+  document.getElementById('savez-icon').classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+initTheme();
+applyFilters();
+</script>
+</body>
+</html>
