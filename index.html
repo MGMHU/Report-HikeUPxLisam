@@ -329,7 +329,8 @@ body {
 ═══════════════════════════════════════ */
 /* B2B TICKER — Revolut marquee style */
 .ticker-section {
-  padding: 20px 0 16px;
+  padding: 20px 0 20px;
+  margin-bottom: 28px;
   border-bottom: 1px solid #E8E8EC;
 }
 .ticker-wrap {
@@ -341,7 +342,7 @@ body {
 .ticker-track {
   display: flex; gap: 16px;
   width: max-content;
-  animation: ticker-slide 45s linear infinite;
+  animation: ticker-slide 80s linear infinite;
 }
 .ticker-wrap:hover .ticker-track {
   animation-play-state: paused;
@@ -604,7 +605,7 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
   transition: opacity .2s;
 }
 .cobrand img {
-  height: 16px; width: auto; display: block; object-fit: contain;
+  height: 24px; width: auto; display: block; object-fit: contain;
 }
 .cobrand-sep {
   color: #D1D5DB; font-weight: 300; font-size: 12px;
@@ -675,6 +676,11 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
   </div>
 </div>
 
+<!-- CONTEXT NOTE -->
+<div class="ctx-note">
+  <span class="ctx-dot amber"></span>Réponses email uniquement — aucun cold/warm calling initié.<span class="ctx-sep">·</span><span class="ctx-dot green"></span>Projet pilote Hike Up — phase de cold call pour évaluer le marché, en interne pour ne pas mobiliser les ressources Lisam.<span class="ctx-sep">·</span><span class="ctx-dot acc"></span>Export 26 mars 2026.
+</div>
+
 <!-- B2B TICKER -->
 <div class="ticker-section">
   <div class="ticker-wrap">
@@ -723,11 +729,6 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
       </div>
     </div>
   </div>
-</div>
-
-<!-- CONTEXT NOTE -->
-<div class="ctx-note">
-  <span class="ctx-dot amber"></span>Réponses email uniquement — aucun cold/warm calling initié.<span class="ctx-sep">·</span><span class="ctx-dot green"></span>Projet pilote Hike Up — phase de cold call pour évaluer le marché, en interne pour ne pas mobiliser les ressources Lisam.<span class="ctx-sep">·</span><span class="ctx-dot acc"></span>Export 26 mars 2026.
 </div>
 
 <!-- PASSWORD MODAL -->
@@ -845,10 +846,6 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
 <!-- MAIN CONTENT -->
 <div class="wrap">
 
-  <div class="ctx-note" style="padding:8px 0 16px; margin-bottom:8px; border-bottom:1px solid #E8E8EC;">
-    Valeurs en <strong>ARR (Annual Recurring Revenue)</strong>. Rétention estimée à <strong id="ltv-s-ret">80 %</strong> → LTV par dossier : <strong id="ltv-s-val">60 000 €</strong> <code id="ltv-s-formula">LTV = 12 000 € ÷ 20 % = 60 000 €</code>
-  </div>
-
   <div class="kpi-row">
     <div class="kpi-card">
       <div class="kpi-label">Pipeline total <span class="kpi-tag arr">ARR</span></div>
@@ -884,6 +881,10 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
         <div class="leg" id="leg-prod"></div>
       </div>
     </div>
+  </div>
+
+  <div class="ctx-note" style="padding:0 0 12px; margin-bottom:24px; text-align:justify;">
+    Valeurs en <strong>ARR (Annual Recurring Revenue)</strong>. Rétention estimée à <strong id="ltv-s-ret">80 %</strong> → LTV par dossier : <strong id="ltv-s-val">60 000 €</strong> <code id="ltv-s-formula">LTV = 12 000 € ÷ 20 % = 60 000 €</code>
   </div>
 
   <div class="section-label">Points clés</div>
