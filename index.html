@@ -587,6 +587,36 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
 .admin-footer-btns { display: flex; gap: 8px; }
 .btn-exp { padding: 7px 14px; background: #FFFFFF; color: #52525B; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
 .btn-exp:hover { background: #F4F4F6; }
+
+/* CSV IMPORT */
+.csv-import-zone {
+  border: 2px dashed #D1D5DB; border-radius: var(--rsm);
+  padding: 28px; text-align: center; cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.csv-import-zone:hover, .csv-import-zone.drag-over {
+  border-color: #191C1F; background: rgba(25,28,31,.02);
+}
+.csv-drop-label { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.csv-drop-icon { font-size: 24px; color: #9CA3AF; }
+.csv-drop-label span { font-size: 13px; color: #52525B; }
+.csv-drop-label strong { color: #191C1F; }
+.csv-drop-hint { font-size: 10px; color: #9CA3AF; margin-top: 2px; }
+.csv-preview-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; flex-wrap: wrap; gap: 8px;
+}
+.csv-preview-count { font-size: 13px; font-weight: 600; color: #191C1F; }
+.csv-preview-actions { display: flex; gap: 6px; }
+.btn-csv-cancel { padding: 6px 12px; background: #F4F4F6; color: #52525B; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-csv-mode { padding: 6px 12px; background: #EEF2FF; color: #4F46E5; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; font-weight: 600; }
+.btn-csv-import { padding: 6px 14px; background: #191C1F; color: #fff; border: none; border-radius: var(--rsm); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
+.btn-csv-import:hover { background: #2D3036; }
+.csv-preview-tbl-wrap { max-height: 260px; overflow: auto; border-radius: var(--rsm); border: 1px solid #E8E8EC; }
+.csv-tbl td { font-size: 11px; }
+.rev-badge { display: inline-flex; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; letter-spacing: .04em; }
+.rev-badge.arr { background: var(--tag-arr-bg); color: var(--tag-arr-c); }
+.rev-badge.ca { background: #FFF7ED; color: #C2410C; }
 .btn-clr { padding: 7px 14px; background: none; color: #DC2626; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
 .btn-clr:hover { background: #FEE2E2; }
 .admin-hint { font-size: 11px; color: #9CA3AF; }
@@ -782,6 +812,33 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
       </div>
     </div>
     <div class="a-sec admin-full">
+      <div class="a-sec-title">Importer un CSV</div>
+      <div class="csv-import-zone" id="csv-drop-zone">
+        <input type="file" id="csv-file" accept=".csv,.tsv,.txt" style="display:none" onchange="handleCSVFile(this)">
+        <div class="csv-drop-label" onclick="document.getElementById('csv-file').click()">
+          <span class="csv-drop-icon">↑</span>
+          <span>Glissez un fichier CSV ici ou <strong>cliquez pour parcourir</strong></span>
+          <span class="csv-drop-hint">Colonnes attendues : entity, status, product, hubspot, company, firstName, lastName, revType, amount, date, comment</span>
+        </div>
+      </div>
+      <div id="csv-preview" style="display:none">
+        <div class="csv-preview-head">
+          <span class="csv-preview-count" id="csv-count"></span>
+          <div class="csv-preview-actions">
+            <button class="btn-csv-cancel" onclick="cancelCSV()">Annuler</button>
+            <button class="btn-csv-mode" id="csv-mode-btn" onclick="toggleCSVMode()">Mode : remplacer</button>
+            <button class="btn-csv-import" onclick="confirmCSVImport()">Importer</button>
+          </div>
+        </div>
+        <div class="csv-preview-tbl-wrap">
+          <table class="admin-tbl csv-tbl">
+            <thead id="csv-thead"></thead>
+            <tbody id="csv-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="a-sec admin-full">
       <div class="a-sec-title">Ajouter un dossier</div>
       <div class="af-row3">
         <div class="af"><label>Type</label>
@@ -794,14 +851,17 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
             <option>Rendez-vous prévu</option><option>Devis/Offre envoyé</option>
           </select>
         </div>
-        <div class="af"><label>Montant ARR</label><select id="fn-amount"></select></div>
+        <div class="af"><label>Revenu</label>
+          <select id="fn-revtype"><option value="ARR">ARR (récurrent)</option><option value="CA">CA (one-shot)</option></select>
+        </div>
       </div>
       <div class="af-row3">
+        <div class="af"><label>Montant</label><select id="fn-amount"></select></div>
         <div class="af"><label>Entreprise</label><input type="text" id="fn-co" placeholder="Nom de l'entreprise"></div>
         <div class="af"><label>Prénom</label><input type="text" id="fn-fn" placeholder="Prénom"></div>
-        <div class="af"><label>Nom</label><input type="text" id="fn-ln" placeholder="Nom de famille"></div>
       </div>
       <div class="af-row3">
+        <div class="af"><label>Nom</label><input type="text" id="fn-ln" placeholder="Nom de famille"></div>
         <div class="af"><label>Produit cible</label>
           <select id="fn-prod">
             <option value="">—</option><option>ExESS</option><option>ComplyStation</option>
@@ -825,7 +885,7 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
       <div class="admin-tbl-wrap">
         <table class="admin-tbl">
           <thead><tr>
-            <th>Type</th><th>Entreprise</th><th>Statut</th><th>Produit</th><th>ARR</th><th>Date</th><th></th>
+            <th>Type</th><th>Entreprise</th><th>Statut</th><th>Produit</th><th>Rev.</th><th>Montant</th><th>Date</th><th></th>
           </tr></thead>
           <tbody id="admin-tbody"></tbody>
         </table>
@@ -835,6 +895,7 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
   <div class="admin-footer">
     <div class="admin-hint">Modifications en temps réel · Ouvrez ce fichier dans un éditeur pour l'éditer directement</div>
     <div class="admin-footer-btns">
+      <button class="btn-exp" onclick="exportCSV()">⬇ Exporter CSV</button>
       <button class="btn-exp" onclick="exportJSON()">⬇ Exporter JSON</button>
       <button class="btn-clr" onclick="clearAll()">Vider le pipeline</button>
     </div>
@@ -982,7 +1043,7 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
         <th onclick="srt('product')" id="th-p">Produit <span class="si">↕</span></th>
         <th onclick="srt('hubspot')" id="th-h">HubSpot <span class="si">↕</span></th>
         <th onclick="srt('date')" id="th-d">Date <span class="si">↕</span></th>
-        <th onclick="srt('amount')" id="th-a" class="th-r">ARR <span class="si">↕</span></th>
+        <th onclick="srt('amount')" id="th-a" class="th-r">Montant <span class="si">↕</span></th>
         <th class="th-r" style="color:var(--teal)">LTV</th>
       </tr></thead>
       <tbody id="tbl-body"></tbody>
@@ -1035,24 +1096,24 @@ let ARR_P = [12000, 24000, 36000, 48000];
 let nid = 19;
 
 let DATA = [
-  {id:1,  entity:'lead',        status:'A appeler',                   product:'',             hubspot:'New',                     company:'Apave',                    firstName:'Tristan',    lastName:'Perron',         amount:12000, date:'2026-03-26', linkedin:'https://www.linkedin.com/in/ACwAACC_U8EBUy6aNfqbLnIhxzbKbvnHSCi02zA/', linkedinCo:'https://www.linkedin.com/company/715602', comment:''},
-  {id:2,  entity:'lead',        status:'A appeler',                   product:'',             hubspot:'New',                     company:'Vulcain Engineering Group',  firstName:'Fabrice',    lastName:'Garabello',      amount:12000, date:'2026-11-03', linkedin:'', linkedinCo:'', comment:'@Thierry Des nouvelles de lui ?'},
-  {id:3,  entity:'lead',        status:"Deuxième tentative d'appel",  product:'ExESS',        hubspot:'New',                     company:'UFCC',                     firstName:'Abdelaziz',  lastName:'Chadi',           amount:12000, date:'2026-03-17', linkedin:'https://www.linkedin.com/in/abdelaziz-chadi-5288b612a/', linkedinCo:'', comment:'Email 18 mars. A+ Dominique'},
-  {id:4,  entity:'lead',        status:'En attente',                  product:'Publichem',    hubspot:'Connected',               company:'ELECTRICITE VEIT',          firstName:'Nicolas',    lastName:'Undreiner',      amount:12000, date:'2026-02-18', linkedin:'', linkedinCo:'https://www.linkedin.com/company/25502497', comment:'50 FDS max. Envoi plaquette Publichem.'},
-  {id:5,  entity:'lead',        status:'En attente',                  product:'',             hubspot:'Connected (à relancer)',   company:'Safran',                   firstName:'Lucy',       lastName:'Duhamel',        amount:12000, date:'2026-02-20', linkedin:'', linkedinCo:'https://www.linkedin.com/company/521777', comment:'Relance avec nouvelles dates : 31 mars et 1er avril.'},
-  {id:6,  entity:'lead',        status:'En attente',                  product:'ComplyStation', hubspot:'Connected',              company:'Délifrance',                firstName:'Jacques',    lastName:'Duquesne',       amount:12000, date:'2026-02-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/40544', comment:'Fabricant surgelé. Transfert ComplyStation ?'},
-  {id:7,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'BEILLARD TUBES CARTON',     firstName:'Emilie',     lastName:'Richard',        amount:12000, date:'2026-05-03', linkedin:'', linkedinCo:'', comment:'Reprendre contact fin année.'},
-  {id:8,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'Greif Plastics Lille',      firstName:'Stéphane',   lastName:'Sellier',        amount:12000, date:'2026-03-10', linkedin:'', linkedinCo:'', comment:'Reprendre contact juin 2026.'},
-  {id:9,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'Akkodis',                  firstName:'Séphora',    lastName:'Lafi Derradji',  amount:12000, date:'2026-02-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/79383535', comment:'RDV annulé 17/3. Deadline 10/4.'},
-  {id:10, entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'(à relancer)',             company:'Kadans Science Partner',    firstName:'Stelina',    lastName:'Loiodice',       amount:12000, date:'2026-03-16', linkedin:'', linkedinCo:'https://www.linkedin.com/company/2066318', comment:'À relancer.'},
-  {id:11, entity:'lead',        status:'En attente',                  product:'EcoMundo',     hubspot:'Connected (demande démo)', company:'Sanofi',                   firstName:'Vincent',    lastName:'Hochard Fatela', amount:12000, date:'2026-01-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/1642', comment:'Transférer équipes EcoMundo.'},
-  {id:12, entity:'lead',        status:'En attente',                  product:'ComplyStation', hubspot:'Connected',              company:'YSEIS',                     firstName:'Mahamadou',  lastName:'Diagouraga',     amount:12000, date:'2026-02-24', linkedin:'', linkedinCo:'https://www.linkedin.com/company/10138540', comment:'Voir ComplyStation 2.'},
-  {id:13, entity:'opportunity', status:'Devis/Offre envoyé',          product:'ExESS',        hubspot:'Proposal',                company:'CILcare',                   firstName:'Philippe',   lastName:'Larroze-Chicot', amount:12000, date:'2026-02-06', linkedin:'', linkedinCo:'https://fr.linkedin.com/company/cilcare', comment:'Offre envoyée sem. 9/02. Aucun retour >6 semaines.'},
-  {id:14, entity:'opportunity', status:'Nouveau',                     product:'',             hubspot:'New',                     company:'LA-CO Industries Europe',   firstName:'Mélanie',    lastName:'Pouzet',         amount:12000, date:'2026-03-23', linkedin:'', linkedinCo:'', comment:'À appeler.'},
-  {id:15, entity:'opportunity', status:'Nouveau',                     product:'ExESS',        hubspot:'New',                     company:'Curium Pharma',             firstName:'Christophe', lastName:'Gosselin',       amount:12000, date:'2026-03-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/16268747', comment:'RDV proposé vendredi 10h.'},
-  {id:16, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Gaches Chimie Spécialités', firstName:'Pierre',     lastName:'Gaches',         amount:12000, date:'2026-02-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/groupe-gaches-chimie/', comment:'3 échecs précédents. Démo 27/3.'},
-  {id:17, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Parfex',                    firstName:'Hélène',     lastName:'Parent',         amount:12000, date:'2026-02-05', linkedin:'', linkedinCo:'', comment:'Démo effectuée 04/03.'},
-  {id:18, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Salveco',                   firstName:'Alexandre',  lastName:'Laygnez',        amount:12000, date:'2026-02-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/salveco-fr/', comment:''},
+  {id:1,  entity:'lead',        status:'A appeler',                   product:'',             hubspot:'New',                     company:'Apave',                    firstName:'Tristan',    lastName:'Perron',         revType:'ARR', amount:12000, date:'2026-03-26', linkedin:'https://www.linkedin.com/in/ACwAACC_U8EBUy6aNfqbLnIhxzbKbvnHSCi02zA/', linkedinCo:'https://www.linkedin.com/company/715602', comment:''},
+  {id:2,  entity:'lead',        status:'A appeler',                   product:'',             hubspot:'New',                     company:'Vulcain Engineering Group',  firstName:'Fabrice',    lastName:'Garabello',      revType:'ARR', amount:12000, date:'2026-11-03', linkedin:'', linkedinCo:'', comment:'@Thierry Des nouvelles de lui ?'},
+  {id:3,  entity:'lead',        status:"Deuxième tentative d'appel",  product:'ExESS',        hubspot:'New',                     company:'UFCC',                     firstName:'Abdelaziz',  lastName:'Chadi',           revType:'ARR', amount:12000, date:'2026-03-17', linkedin:'https://www.linkedin.com/in/abdelaziz-chadi-5288b612a/', linkedinCo:'', comment:'Email 18 mars. A+ Dominique'},
+  {id:4,  entity:'lead',        status:'En attente',                  product:'Publichem',    hubspot:'Connected',               company:'ELECTRICITE VEIT',          firstName:'Nicolas',    lastName:'Undreiner',      revType:'ARR', amount:12000, date:'2026-02-18', linkedin:'', linkedinCo:'https://www.linkedin.com/company/25502497', comment:'50 FDS max. Envoi plaquette Publichem.'},
+  {id:5,  entity:'lead',        status:'En attente',                  product:'',             hubspot:'Connected (à relancer)',   company:'Safran',                   firstName:'Lucy',       lastName:'Duhamel',        revType:'ARR', amount:12000, date:'2026-02-20', linkedin:'', linkedinCo:'https://www.linkedin.com/company/521777', comment:'Relance avec nouvelles dates : 31 mars et 1er avril.'},
+  {id:6,  entity:'lead',        status:'En attente',                  product:'ComplyStation', hubspot:'Connected',              company:'Délifrance',                firstName:'Jacques',    lastName:'Duquesne',       revType:'ARR', amount:12000, date:'2026-02-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/40544', comment:'Fabricant surgelé. Transfert ComplyStation ?'},
+  {id:7,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'BEILLARD TUBES CARTON',     firstName:'Emilie',     lastName:'Richard',        revType:'ARR', amount:12000, date:'2026-05-03', linkedin:'', linkedinCo:'', comment:'Reprendre contact fin année.'},
+  {id:8,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'Greif Plastics Lille',      firstName:'Stéphane',   lastName:'Sellier',        revType:'ARR', amount:12000, date:'2026-03-10', linkedin:'', linkedinCo:'', comment:'Reprendre contact juin 2026.'},
+  {id:9,  entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'Connected (à relancer)',   company:'Akkodis',                  firstName:'Séphora',    lastName:'Lafi Derradji',  revType:'ARR', amount:12000, date:'2026-02-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/79383535', comment:'RDV annulé 17/3. Deadline 10/4.'},
+  {id:10, entity:'lead',        status:'En attente',                  product:'ExESS',        hubspot:'(à relancer)',             company:'Kadans Science Partner',    firstName:'Stelina',    lastName:'Loiodice',       revType:'ARR', amount:12000, date:'2026-03-16', linkedin:'', linkedinCo:'https://www.linkedin.com/company/2066318', comment:'À relancer.'},
+  {id:11, entity:'lead',        status:'En attente',                  product:'EcoMundo',     hubspot:'Connected (demande démo)', company:'Sanofi',                   firstName:'Vincent',    lastName:'Hochard Fatela', revType:'ARR', amount:12000, date:'2026-01-19', linkedin:'', linkedinCo:'https://www.linkedin.com/company/1642', comment:'Transférer équipes EcoMundo.'},
+  {id:12, entity:'lead',        status:'En attente',                  product:'ComplyStation', hubspot:'Connected',              company:'YSEIS',                     firstName:'Mahamadou',  lastName:'Diagouraga',     revType:'ARR', amount:12000, date:'2026-02-24', linkedin:'', linkedinCo:'https://www.linkedin.com/company/10138540', comment:'Voir ComplyStation 2.'},
+  {id:13, entity:'opportunity', status:'Devis/Offre envoyé',          product:'ExESS',        hubspot:'Proposal',                company:'CILcare',                   firstName:'Philippe',   lastName:'Larroze-Chicot', revType:'ARR', amount:12000, date:'2026-02-06', linkedin:'', linkedinCo:'https://fr.linkedin.com/company/cilcare', comment:'Offre envoyée sem. 9/02. Aucun retour >6 semaines.'},
+  {id:14, entity:'opportunity', status:'Nouveau',                     product:'',             hubspot:'New',                     company:'LA-CO Industries Europe',   firstName:'Mélanie',    lastName:'Pouzet',         revType:'ARR', amount:12000, date:'2026-03-23', linkedin:'', linkedinCo:'', comment:'À appeler.'},
+  {id:15, entity:'opportunity', status:'Nouveau',                     product:'ExESS',        hubspot:'New',                     company:'Curium Pharma',             firstName:'Christophe', lastName:'Gosselin',       revType:'ARR', amount:12000, date:'2026-03-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/16268747', comment:'RDV proposé vendredi 10h.'},
+  {id:16, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Gaches Chimie Spécialités', firstName:'Pierre',     lastName:'Gaches',         revType:'ARR', amount:12000, date:'2026-02-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/groupe-gaches-chimie/', comment:'3 échecs précédents. Démo 27/3.'},
+  {id:17, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Parfex',                    firstName:'Hélène',     lastName:'Parent',         revType:'ARR', amount:12000, date:'2026-02-05', linkedin:'', linkedinCo:'', comment:'Démo effectuée 04/03.'},
+  {id:18, entity:'opportunity', status:'Rendez-vous prévu',           product:'ExESS',        hubspot:'Connected',               company:'Salveco',                   firstName:'Alexandre',  lastName:'Laygnez',        revType:'ARR', amount:12000, date:'2026-02-25', linkedin:'', linkedinCo:'https://www.linkedin.com/company/salveco-fr/', comment:''},
 ];
 
 let filtered = [...DATA];
@@ -1164,6 +1225,7 @@ function addRecord(){
     company:co,
     firstName:document.getElementById('fn-fn').value.trim(),
     lastName: document.getElementById('fn-ln').value.trim(),
+    revType: document.getElementById('fn-revtype').value||'ARR',
     amount: parseInt(document.getElementById('fn-amount').value)||ARR_P[0],
     date:   document.getElementById('fn-date').value||new Date().toISOString().split('T')[0],
     linkedin:'', linkedinCo:'',
@@ -1189,6 +1251,10 @@ function renderAdminTable(){
     <td><select onchange="ef(${r.id},'product',this.value)">
       <option value="" ${!r.product?'selected':''}>—</option>
       ${['ExESS','ComplyStation','Publichem','EcoMundo'].map(p=>`<option ${r.product===p?'selected':''}>${p}</option>`).join('')}
+    </select></td>
+    <td><select onchange="ef(${r.id},'revType',this.value)" style="min-width:60px">
+      <option value="ARR" ${r.revType==='ARR'?'selected':''}>ARR</option>
+      <option value="CA" ${r.revType!=='ARR'?'selected':''}>CA</option>
     </select></td>
     <td><select onchange="ef(${r.id},'amount',parseInt(this.value))">
       ${ARR_P.map(v=>`<option value="${v}" ${r.amount===v?'selected':''}>${fmt(v)}</option>`).join('')}
@@ -1233,23 +1299,34 @@ function srtRender(){
 function renderAll(){ renderHero(); renderKPIs(); renderFunnel(); renderChart(); renderTable(); }
 
 function renderHero(){
-  const arr=filtered.reduce((s,r)=>s+r.amount,0);
+  const arrTotal=filtered.filter(r=>r.revType==='ARR').reduce((s,r)=>s+r.amount,0);
+  const caTotal=filtered.filter(r=>r.revType!=='ARR').reduce((s,r)=>s+r.amount,0);
+  const total=arrTotal+caTotal;
   const opps=filtered.filter(r=>r.entity==='opportunity');
   const leads=filtered.filter(r=>r.entity==='lead');
-  document.getElementById('h-arr').innerHTML=`${fmt(arr)}<span>ARR</span>`;
-  document.getElementById('h-ltv').textContent=fmt(ltv(arr));
+  let heroLabel = fmt(total);
+  if(caTotal>0 && arrTotal>0) heroLabel+=`<span>ARR ${fmt(arrTotal)} · CA ${fmt(caTotal)}</span>`;
+  else if(caTotal>0) heroLabel+=`<span>CA</span>`;
+  else heroLabel+=`<span>ARR</span>`;
+  document.getElementById('h-arr').innerHTML=heroLabel;
+  document.getElementById('h-ltv').textContent=fmt(ltv(arrTotal));
   document.getElementById('h-opps').textContent=opps.length;
   document.getElementById('h-leads').textContent=leads.length;
   document.getElementById('h-sub').textContent=`${filtered.length} dossiers · Réponses email uniquement · Aucun calling initié`;
 }
 
 function renderKPIs(){
-  const arr=filtered.reduce((s,r)=>s+r.amount,0);
+  const arrOnly=filtered.filter(r=>r.revType==='ARR');
+  const caOnly=filtered.filter(r=>r.revType!=='ARR');
+  const arrSum=arrOnly.reduce((s,r)=>s+r.amount,0);
+  const caSum=caOnly.reduce((s,r)=>s+r.amount,0);
+  const total=arrSum+caSum;
   const opps=filtered.filter(r=>r.entity==='opportunity');
   const leads=filtered.filter(r=>r.entity==='lead');
-  document.getElementById('kpi-arr').textContent=fmt(arr);
-  document.getElementById('kpi-arr-s').textContent=filtered.length+' dossier'+(filtered.length>1?'s':'');
-  document.getElementById('kpi-ltv').textContent=fmt(ltv(arr));
+  document.getElementById('kpi-arr').textContent=fmt(total);
+  const sub=caSum>0?`${arrOnly.length} ARR · ${caOnly.length} CA`:`${filtered.length} dossier${filtered.length>1?'s':''}`;
+  document.getElementById('kpi-arr-s').textContent=sub;
+  document.getElementById('kpi-ltv').textContent=fmt(ltv(arrSum));
   document.getElementById('kpi-opps').textContent=fmt(opps.reduce((s,r)=>s+r.amount,0));
   document.getElementById('kpi-opps-s').textContent=opps.length+' dossier'+(opps.length>1?'s':'');
   document.getElementById('kpi-leads').textContent=fmt(leads.reduce((s,r)=>s+r.amount,0));
@@ -1328,8 +1405,8 @@ function renderTable(){
       <td>${pb}</td>
       <td class="dt">${hs}</td>
       <td class="dt">${fd(r.date)}</td>
-      <td class="ra">${fmt(r.amount)}</td>
-      <td class="rltv">${fmt(ltv(r.amount))}</td>
+      <td class="ra">${fmt(r.amount)} <span class="rev-badge ${r.revType==='ARR'?'arr':'ca'}">${r.revType||'ARR'}</span></td>
+      <td class="rltv">${r.revType==='ARR'?fmt(ltv(r.amount)):'—'}</td>
     </tr>`;
   }).join('');
 }
@@ -1344,9 +1421,12 @@ function selRow_f(i){
   document.getElementById('dp-ct').textContent=r.firstName+' '+r.lastName;
   document.getElementById('dp-ent').innerHTML=`<span class="badge ${r.entity==='lead'?'b-lead':'b-opp'}">${r.entity==='lead'?'Lead':'Opportunité'}</span>`;
   document.getElementById('dp-st').innerHTML=`<span class="badge ${sCls(r.status)}">${r.status}</span>`;
-  document.getElementById('dp-arr').textContent=fmt(r.amount)+' / an';
-  document.getElementById('dp-ltv').textContent=fmt(ltv(r.amount));
-  document.getElementById('dp-ltv-row').innerHTML=`ARR <strong>${fmt(r.amount)}</strong> · LTV estimée <strong>${fmt(ltv(r.amount))}</strong> · ${LTV_M}× (rétention ${Math.round((1-CHURN)*100)}%)`;
+  const isARR = r.revType==='ARR';
+  document.getElementById('dp-arr').textContent=fmt(r.amount)+(isARR?' / an':' (CA)');
+  document.getElementById('dp-ltv').textContent=isARR?fmt(ltv(r.amount)):'N/A';
+  document.getElementById('dp-ltv-row').innerHTML=isARR
+    ?`ARR <strong>${fmt(r.amount)}</strong> · LTV estimée <strong>${fmt(ltv(r.amount))}</strong> · ${LTV_M}× (rétention ${Math.round((1-CHURN)*100)}%)`
+    :`CA <strong>${fmt(r.amount)}</strong> · Revenu non récurrent (upsell / produit)`;
   document.getElementById('dp-prod').innerHTML=r.product?`<span class="badge ${pCls(r.product)}">${r.product}</span>`:'—';
   document.getElementById('dp-hs').textContent=r.hubspot||'—';
   document.getElementById('dp-date').textContent=fd(r.date);
@@ -1361,6 +1441,117 @@ function closeDP(){
   selRow=null;
   document.querySelectorAll('tbody tr').forEach(tr=>tr.classList.remove('sel'));
   document.getElementById('dp').classList.remove('open');
+}
+
+/* ═══════════════════════════════════════
+   CSV IMPORT
+═══════════════════════════════════════ */
+let csvParsed = [];
+let csvMode = 'replace'; // 'replace' or 'append'
+
+// Drag & drop
+const dropZone = document.getElementById('csv-drop-zone');
+if(dropZone){
+  dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', ()=> dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e=>{
+    e.preventDefault(); dropZone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if(f) readCSV(f);
+  });
+}
+
+function handleCSVFile(input){
+  if(input.files[0]) readCSV(input.files[0]);
+  input.value='';
+}
+
+function readCSV(file){
+  const reader = new FileReader();
+  reader.onload = e => parseCSV(e.target.result);
+  reader.readAsText(file, 'UTF-8');
+}
+
+function parseCSV(text){
+  const sep = text.includes('\t') ? '\t' : (text.split(';').length > text.split(',').length ? ';' : ',');
+  const lines = text.trim().split(/\r?\n/);
+  if(lines.length < 2) return alert('Fichier vide ou invalide.');
+  const headers = lines[0].split(sep).map(h=>h.trim().replace(/^["']|["']$/g,''));
+  const rows = [];
+  for(let i=1;i<lines.length;i++){
+    if(!lines[i].trim()) continue;
+    const vals = lines[i].split(sep).map(v=>v.trim().replace(/^["']|["']$/g,''));
+    const obj = {};
+    headers.forEach((h,j)=>obj[h]=vals[j]||'');
+    rows.push(obj);
+  }
+  csvParsed = rows.map((row,i)=>({
+    id: nid + i,
+    entity:    (row.entity||row.type||row.Type||'lead').toLowerCase().includes('opp')?'opportunity':'lead',
+    status:    row.status||row.Status||row.statut||row.Statut||'Nouveau',
+    product:   row.product||row.Product||row.produit||row.Produit||'',
+    hubspot:   row.hubspot||row.HubSpot||row.Hubspot||'New',
+    company:   row.company||row.Company||row.entreprise||row.Entreprise||'',
+    firstName: row.firstName||row.prenom||row.Prenom||row.Prénom||row['first name']||'',
+    lastName:  row.lastName||row.nom||row.Nom||row['last name']||'',
+    revType:   (row.revType||row.revenue||row.Revenue||row.rev||row.Rev||'ARR').toUpperCase()==='CA'?'CA':'ARR',
+    amount:    parseInt(String(row.amount||row.Amount||row.montant||row.Montant||row.ARR||row.CA||'0').replace(/[^\d]/g,''))||ARR_P[0],
+    date:      row.date||row.Date||new Date().toISOString().split('T')[0],
+    linkedin:  row.linkedin||row.LinkedIn||'',
+    linkedinCo:row.linkedinCo||row.LinkedInCo||'',
+    comment:   row.comment||row.Comment||row.note||row.Note||row.notes||row.Notes||''
+  }));
+  showCSVPreview(headers);
+}
+
+function showCSVPreview(headers){
+  document.getElementById('csv-drop-zone').style.display='none';
+  document.getElementById('csv-preview').style.display='block';
+  document.getElementById('csv-count').textContent=`${csvParsed.length} dossier${csvParsed.length>1?'s':''} détecté${csvParsed.length>1?'s':''}`;
+  document.getElementById('csv-thead').innerHTML='<tr>'+['Entreprise','Contact','Type','Produit','Rev.','Montant'].map(h=>`<th>${h}</th>`).join('')+'</tr>';
+  document.getElementById('csv-tbody').innerHTML=csvParsed.map(r=>
+    `<tr><td>${esc(r.company)}</td><td>${esc(r.firstName)} ${esc(r.lastName)}</td>
+    <td><span class="badge ${r.entity==='lead'?'b-lead':'b-opp'}">${r.entity==='lead'?'Lead':'Opp.'}</span></td>
+    <td>${r.product||'—'}</td>
+    <td><span class="rev-badge ${r.revType==='ARR'?'arr':'ca'}">${r.revType}</span></td>
+    <td>${fmt(r.amount)}</td></tr>`
+  ).join('');
+}
+
+function toggleCSVMode(){
+  csvMode = csvMode==='replace'?'append':'replace';
+  document.getElementById('csv-mode-btn').textContent=`Mode : ${csvMode==='replace'?'remplacer':'ajouter'}`;
+}
+
+function confirmCSVImport(){
+  if(!csvParsed.length) return;
+  if(csvMode==='replace'){
+    DATA = csvParsed;
+    nid = Math.max(...DATA.map(r=>r.id))+1;
+  } else {
+    csvParsed.forEach(r=>{ r.id=nid++; DATA.push(r); });
+  }
+  cancelCSV();
+  renderAdminTable(); applyFilters();
+  const fb=document.getElementById('add-fb');
+  fb.textContent=`✓ ${csvParsed.length||'?'} dossiers importés`;
+  setTimeout(()=>fb.textContent='',4000);
+}
+
+function cancelCSV(){
+  csvParsed=[];
+  document.getElementById('csv-preview').style.display='none';
+  document.getElementById('csv-drop-zone').style.display='block';
+}
+
+function exportCSV(){
+  const fields=['entity','status','product','hubspot','company','firstName','lastName','revType','amount','date','linkedin','linkedinCo','comment'];
+  const header=fields.join(';');
+  const rows=DATA.map(r=>fields.map(f=>'"'+String(r[f]||'').replace(/"/g,'""')+'"').join(';'));
+  const csv=header+'\n'+rows.join('\n');
+  const b=new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'});
+  const u=URL.createObjectURL(b);
+  const a=document.createElement('a'); a.href=u;a.download='pipeline.csv';a.click();URL.revokeObjectURL(u);
 }
 
 /* TICKER — duplicate items for seamless infinite loop */
