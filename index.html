@@ -93,7 +93,7 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
-.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px 80px; }
+.wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px 100px; }
 .section-gap { margin-bottom: 36px; }
 .section-label {
   font-size: 11px; font-weight: 600; letter-spacing: .1em;
@@ -114,19 +114,6 @@ body {
   display: flex; align-items: flex-end;
   justify-content: space-between; flex-wrap: wrap; gap: 32px;
 }
-/* Co-branding logos */
-.hero-logos {
-  display: flex; align-items: center; gap: 14px;
-  margin-bottom: 20px;
-}
-.hero-logos img {
-  height: 28px; width: auto; display: block;
-  object-fit: contain;
-}
-.hero-logos-sep {
-  font-size: 14px; font-weight: 300; color: #D1D5DB;
-  line-height: 1; user-select: none;
-}
 .hero-eyebrow {
   font-size: 11px; font-weight: 600; letter-spacing: .12em;
   text-transform: uppercase; color: var(--hero-eye); margin-bottom: 14px;
@@ -140,6 +127,16 @@ body {
   color: var(--hero-sub); margin-left: 8px; letter-spacing: 0;
 }
 .hero-sub { font-size: 13px; color: var(--hero-sub); margin-top: 10px; }
+.hero-tags { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600; padding: 3px 10px;
+  border-radius: 100px; white-space: nowrap;
+}
+.hero-tag.grey { background: #F4F4F6; color: #52525B; }
+.hero-tag.amber { background: #FEF3C7; color: #D97706; }
+.hero-tag.red { background: #FEE2E2; color: #DC2626; }
+.hero-tag.green { background: #DCFCE7; color: #059669; }
 .hero-right { display: flex; gap: 32px; flex-wrap: wrap; align-items: flex-end; }
 .hero-stat { text-align: right; }
 .hero-stat-label {
@@ -277,36 +274,106 @@ body {
 .leg-val { font-size: 12px; font-weight: 600; color: var(--ink); }
 
 /* ═══════════════════════════════════════
-   FILTERS
+   CHIP FILTERS
 ═══════════════════════════════════════ */
-.filters {
-  background: var(--card); border-radius: var(--r);
-  padding: 16px 20px; margin-bottom: 14px;
-  display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;
-  border: none;
+.filters-wrap {
+  background: var(--bg);
+  padding: 16px 24px;
+  margin-bottom: 0;
+  border-bottom: 1px solid #E8E8EC;
 }
-.fg { display: flex; flex-direction: column; gap: 4px; }
-.fg label {
-  font-size: 10px; font-weight: 600; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--ink3);
+.filters-inner {
+  max-width: 1140px; margin: 0 auto;
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
 }
-.fg select, .fg input {
-  padding: 8px 11px; border: none;
+.filter-group {
+  display: flex; gap: 6px; align-items: center;
+}
+.filter-group-wrap {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.filter-group-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .06em; color: #9CA3AF; padding-left: 4px;
+}
+.filter-sep {
+  width: 1px; height: 28px; background: #E8E8EC; margin: 0 4px; flex-shrink: 0; align-self: flex-end;
+}
+.filter-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 6px 12px; border-radius: 100px; border: none;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  background: #F4F4F6; color: #52525B; transition: all .15s;
+}
+.filter-chip:hover { background: #EAEAED; }
+.filter-chip.active {
+  background: #191C1F; color: #FFFFFF;
+}
+.search-box {
+  flex: 1; min-width: 180px;
+  display: flex; align-items: center; gap: 6px;
+}
+.search-box input {
+  flex: 1; padding: 8px 12px; border: none;
   border-radius: var(--rsm); font-size: 13px; color: var(--ink);
-  background: #FFFFFF; outline: none; font-family: inherit; min-width: 130px;
+  background: #F4F4F6; outline: none; font-family: inherit;
 }
-.fg select:focus, .fg input:focus {
+.search-box input:focus {
   box-shadow: 0 0 0 2px rgba(25,28,31,.1);
 }
-.fg.wide { flex: 1; min-width: 180px; }
-.fg.wide input { width: 100%; }
-.btn-reset {
-  padding: 7px 12px; background: #FFFFFF;
-  border: none; border-radius: var(--rsm);
-  font-size: 12px; color: var(--ink3); cursor: pointer; font-family: inherit;
+.res-count {
+  font-size: 11px; color: var(--ink3); white-space: nowrap;
 }
-.btn-reset:hover { background: #E8E8EC; color: var(--ink2); }
-.res-tag { font-size: 11px; color: var(--ink3); padding-bottom: 8px; align-self: flex-end; }
+
+/* ═══════════════════════════════════════
+   B2B INSIGHTS ROW (horizontal scroll)
+═══════════════════════════════════════ */
+.insights-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--ink3);
+  margin-bottom: 14px; padding-top: 8px;
+}
+.insights-scroll {
+  display: flex; gap: 12px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 0 0 4px; margin-bottom: 36px;
+  scrollbar-width: none; -ms-overflow-style: none;
+  cursor: grab;
+}
+.insights-scroll::-webkit-scrollbar { display: none; }
+.insights-scroll.grabbing { cursor: grabbing; }
+.insight-card {
+  flex-shrink: 0; min-width: 280px; scroll-snap-align: start;
+  background: #F4F4F6; border-radius: 16px; padding: 14px 18px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.insight-num {
+  font-size: 20px; font-weight: 800; color: #191C1F;
+  line-height: 1; margin-bottom: 4px;
+}
+.insight-text {
+  font-size: 12px; font-weight: 500; color: #52525B; margin-bottom: 6px;
+  line-height: 1.5; text-align: left;
+}
+.insight-src {
+  font-size: 10px; color: #9CA3AF; font-style: italic; line-height: 1.4;
+}
+
+/* ═══════════════════════════════════════
+   INSIGHTS ROW (regular)
+═══════════════════════════════════════ */
+.insights-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 36px; }
+.icard h2 {
+  font-size: 11px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink3); margin-bottom: 16px;
+}
+.ii {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid #E8E8EC;
+}
+.ii:last-child { border-bottom: none; padding-bottom: 0; }
+.ii-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.ii-t { font-size: 13px; font-weight: 600; color: var(--ink); }
+.ii-b { font-size: 12px; color: var(--ink2); margin-top: 1px; line-height: 1.5; text-align: left; }
 
 /* ═══════════════════════════════════════
    TABLE
@@ -401,51 +468,6 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
 .lk:hover { text-decoration: underline; }
 
 /* ═══════════════════════════════════════
-   INSIGHTS
-═══════════════════════════════════════ */
-.insights-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 36px; }
-.icard h2 {
-  font-size: 11px; font-weight: 600; letter-spacing: .08em;
-  text-transform: uppercase; color: var(--ink3); margin-bottom: 16px;
-}
-.ii {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 10px 0; border-bottom: 1px solid #E8E8EC;
-}
-.ii:last-child { border-bottom: none; padding-bottom: 0; }
-.ii-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
-.ii-t { font-size: 13px; font-weight: 600; color: var(--ink); }
-.ii-b { font-size: 12px; color: var(--ink2); margin-top: 1px; line-height: 1.5; }
-
-/* ═══════════════════════════════════════
-   "LE SAVIEZ-VOUS"
-═══════════════════════════════════════ */
-.savez-wrap { margin-bottom: 36px; }
-.savez-toggle {
-  display: flex; align-items: center; gap: 8px; cursor: pointer;
-  color: var(--ink3); font-size: 11px; font-weight: 600;
-  letter-spacing: .08em; text-transform: uppercase;
-  padding: 10px 0; user-select: none;
-  border-top: 1px solid #E8E8EC;
-}
-.savez-toggle:hover { color: var(--ink2); }
-.savez-toggle-icon { transition: transform .2s; }
-.savez-toggle-icon.open { transform: rotate(180deg); }
-.savez-body { display: none; }
-.savez-body.open { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; padding-top: 14px; }
-.savez-item {
-  background: var(--card); border-radius: var(--r);
-  padding: 18px 20px; border: none;
-}
-.savez-num {
-  font-size: 26px; font-weight: 800; letter-spacing: -1px;
-  color: var(--savez-num-c); line-height: 1.1; margin-bottom: 4px;
-}
-.savez-claim { font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
-.savez-detail { font-size: 11px; color: var(--ink2); line-height: 1.5; }
-.savez-src { font-size: 10px; color: var(--ink3); margin-top: 6px; font-style: italic; }
-
-/* ═══════════════════════════════════════
    ADMIN — PASSWORD MODAL
 ═══════════════════════════════════════ */
 .modal-overlay {
@@ -487,60 +509,79 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
 .btn-modal-ok:hover { background: #2D3036; }
 
 /* ═══════════════════════════════════════
-   ADMIN PANEL — always dark
+   ADMIN PANEL — WHITE/GREY THEME
 ═══════════════════════════════════════ */
 #admin-panel { display: none; margin-bottom: 36px; }
 #admin-panel.open { display: block; }
-.admin-wrap { background: #09090F; border-radius: 16px; padding: 28px; border: 1px solid #1E1E2A; }
+.admin-wrap { background: #F4F4F6; border-radius: 16px; padding: 28px; border: none; }
 .admin-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
 .admin-title-row { display: flex; align-items: center; gap: 10px; }
-.admin-title { font-size: 15px; font-weight: 800; color: #FFFFFF; }
-.admin-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; background: #1E1E2A; color: #6366F1; border-radius: 20px; letter-spacing: .06em; text-transform: uppercase; }
-.btn-admin-close { background: #1E1E2A; border: none; color: #71717A; border-radius: var(--rsm); padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
-.btn-admin-close:hover { background: #27272A; color: #fff; }
+.admin-title { font-size: 15px; font-weight: 800; color: #191C1F; }
+.admin-badge { font-size: 10px; font-weight: 700; padding: 2px 8px; background: #EEF2FF; color: #4F46E5; border-radius: 20px; letter-spacing: .06em; text-transform: uppercase; }
+.btn-admin-close { background: #FFFFFF; border: none; color: #52525B; border-radius: var(--rsm); padding: 6px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-admin-close:hover { background: #EAEAED; color: #191C1F; }
 .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .admin-full { grid-column: span 2; }
-.a-sec { background: #111118; border-radius: var(--rsm); padding: 18px; border: 1px solid #1E1E2A; }
-.a-sec-title { font-size: 10px; font-weight: 700; color: #52525B; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 14px; }
+.a-sec { background: #FFFFFF; border-radius: var(--rsm); padding: 18px; border: none; }
+.a-sec-title { font-size: 10px; font-weight: 700; color: #9CA3AF; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 14px; }
 .af { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
 .af:last-child { margin-bottom: 0; }
-.af label { font-size: 11px; color: #52525B; font-weight: 500; }
-.af input, .af select, .af textarea { background: #09090F; border: 1px solid #27272A; border-radius: var(--rsm); padding: 8px 10px; color: #E4E4E7; font-size: 13px; font-family: inherit; outline: none; }
-.af input:focus, .af select:focus { border-color: #6366F1; }
+.af label { font-size: 11px; color: #9CA3AF; font-weight: 500; }
+.af input, .af select, .af textarea { background: #F4F4F6; border: none; border-radius: var(--rsm); padding: 8px 10px; color: #191C1F; font-size: 13px; font-family: inherit; outline: none; }
+.af input:focus, .af select:focus { box-shadow: 0 0 0 2px rgba(25,28,31,.1); }
 .af textarea { resize: vertical; min-height: 55px; }
 .af-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .af-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
-.btn-add-rec { width: 100%; padding: 10px; background: #6366F1; color: #fff; border: none; border-radius: var(--rsm); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 4px; }
-.btn-add-rec:hover { background: #4F46E5; }
-.add-fb { font-size: 12px; color: #4ADE80; height: 18px; margin-top: 4px; }
+.btn-add-rec { width: 100%; padding: 10px; background: #191C1F; color: #fff; border: none; border-radius: var(--rsm); font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 4px; }
+.btn-add-rec:hover { background: #2D3036; }
+.add-fb { font-size: 12px; color: #059669; height: 18px; margin-top: 4px; }
 .presets-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
-.preset-chip { display: flex; align-items: center; gap: 4px; background: #09090F; border: 1px solid #27272A; border-radius: 20px; padding: 3px 10px; font-size: 12px; color: #A1A1AA; }
-.preset-rm { background: none; border: none; color: #F87171; cursor: pointer; font-size: 14px; padding: 0 2px; line-height: 1; }
+.preset-chip { display: flex; align-items: center; gap: 4px; background: #FFFFFF; border: none; border-radius: 20px; padding: 3px 10px; font-size: 12px; color: #52525B; }
+.preset-rm { background: none; border: none; color: #DC2626; cursor: pointer; font-size: 14px; padding: 0 2px; line-height: 1; }
 .preset-add-row { display: flex; gap: 6px; }
 .preset-add-row input { flex: 1; }
-.btn-preset-add { padding: 7px 12px; background: #27272A; color: #E4E4E7; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
-.btn-preset-add:hover { background: #6366F1; color: #fff; }
+.btn-preset-add { padding: 7px 12px; background: #F4F4F6; color: #52525B; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-preset-add:hover { background: #191C1F; color: #fff; }
 .slider-row { display: flex; align-items: center; gap: 10px; }
-.slider-row input[type=range] { flex: 1; accent-color: #6366F1; }
-.slider-val { font-size: 18px; font-weight: 800; color: #FFFFFF; min-width: 44px; }
+.slider-row input[type=range] { flex: 1; accent-color: #191C1F; }
+.slider-val { font-size: 18px; font-weight: 800; color: #191C1F; min-width: 44px; }
 .a-calc { font-size: 12px; color: #52525B; margin-top: 10px; line-height: 1.7; }
-.a-calc span { color: #A1A1AA; }
+.a-calc span { color: #9CA3AF; }
 .admin-tbl-wrap { overflow-x: auto; }
 .admin-tbl { width: 100%; border-collapse: collapse; font-size: 12px; }
-.admin-tbl th { text-align: left; padding: 6px 8px; color: #52525B; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid #1E1E2A; }
-.admin-tbl td { padding: 6px 8px; border-bottom: 1px solid #111118; vertical-align: middle; color: #A1A1AA; }
-.admin-tbl tr:hover td { background: #0F0F18; }
-.admin-tbl input, .admin-tbl select { background: #09090F; border: 1px solid #27272A; border-radius: 4px; padding: 4px 7px; color: #E4E4E7; font-size: 12px; font-family: inherit; width: 100%; }
-.btn-del { background: none; border: none; color: #F87171; cursor: pointer; font-size: 14px; padding: 2px 5px; }
+.admin-tbl th { text-align: left; padding: 6px 8px; color: #9CA3AF; font-size: 10px; text-transform: uppercase; letter-spacing: .06em; border-bottom: 1px solid #E8E8EC; }
+.admin-tbl td { padding: 6px 8px; border-bottom: 1px solid #E8E8EC; vertical-align: middle; color: #52525B; }
+.admin-tbl tr:hover td { background: #F4F4F6; }
+.admin-tbl input, .admin-tbl select { background: #F4F4F6; border: none; border-radius: 4px; padding: 4px 7px; color: #191C1F; font-size: 12px; font-family: inherit; width: 100%; }
+.btn-del { background: none; border: none; color: #DC2626; cursor: pointer; font-size: 14px; padding: 2px 5px; }
 .btn-del:hover { color: #EF4444; }
 .admin-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; flex-wrap: wrap; gap: 8px; }
 .admin-footer-btns { display: flex; gap: 8px; }
-.btn-exp { padding: 7px 14px; background: #1E1E2A; color: #A1A1AA; border: 1px solid #27272A; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
-.btn-exp:hover { background: #6366F1; color: #fff; border-color: #6366F1; }
-.btn-clr { padding: 7px 14px; background: none; color: #F87171; border: 1px solid #27272A; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
-.btn-clr:hover { background: #2D0D0D; }
-.admin-hint { font-size: 11px; color: #3F3F46; }
+.btn-exp { padding: 7px 14px; background: #FFFFFF; color: #52525B; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-exp:hover { background: #F4F4F6; }
+.btn-clr { padding: 7px 14px; background: none; color: #DC2626; border: none; border-radius: var(--rsm); font-size: 12px; cursor: pointer; font-family: inherit; }
+.btn-clr:hover { background: #FEE2E2; }
+.admin-hint { font-size: 11px; color: #9CA3AF; }
 .empty-state { text-align: center; padding: 28px; color: var(--ink3); font-size: 13px; }
+
+/* ═══════════════════════════════════════
+   STICKY CO-BRAND — bottom-left
+═══════════════════════════════════════ */
+.cobrand {
+  position: fixed; bottom: 20px; left: 24px; z-index: 900;
+  display: flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,.92); backdrop-filter: blur(12px);
+  padding: 8px 16px; border-radius: 100px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  font-size: 11px; color: #9CA3AF; font-weight: 500;
+  transition: opacity .2s;
+}
+.cobrand img {
+  height: 16px; width: auto; display: block; object-fit: contain;
+}
+.cobrand-sep {
+  color: #D1D5DB; font-weight: 300; font-size: 12px;
+}
 
 /* ── Responsive ── */
 @media(max-width:900px){
@@ -549,7 +590,6 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
   .insights-row{grid-template-columns:1fr}
   .hero-inner{flex-direction:column;align-items:flex-start}
   .hero-right{flex-direction:row}
-  .savez-body.open{grid-template-columns:1fr 1fr}
   .admin-grid{grid-template-columns:1fr}
   .admin-full{grid-column:span 1}
   .kpi-card:first-child{border-radius:var(--r)}
@@ -558,13 +598,15 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
 @media(max-width:580px){
   .kpi-row{grid-template-columns:1fr}
   .hero-num{font-size:40px}
-  .savez-body.open{grid-template-columns:1fr}
   .dp-grid{grid-template-columns:1fr 1fr}
   .hero-actions{flex-wrap:wrap}
+  .filters-inner{flex-direction:column;align-items:flex-start}
+  .filter-sep{display:none}
+  .search-box{width:100%}
 }
 @media print{
   .hero{padding:24px}
-  .filters,.btn,#admin-panel,.modal-overlay,.savez-toggle{display:none!important}
+  .filters-wrap,.btn,#admin-panel,.modal-overlay,.cobrand{display:none!important}
   .dp{display:none!important}
 }
 </style>
@@ -575,14 +617,15 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-left">
-      <div class="hero-logos">
-        <img src="logo-lisam.svg" alt="Lisam">
-        <span class="hero-logos-sep">×</span>
-        <img src="logo-hikeup.svg" alt="Hike Up">
-      </div>
       <div class="hero-eyebrow">Pipeline Commercial · 26 mars 2026</div>
       <div class="hero-num" id="h-arr">216 000 €<span>ARR</span></div>
       <div class="hero-sub" id="h-sub">18 dossiers actifs · Réponses email uniquement · Aucun calling initié</div>
+      <div class="hero-tags">
+        <span class="hero-tag grey">Q1 2026</span>
+        <span class="hero-tag amber">Email only</span>
+        <span class="hero-tag red">0 appels</span>
+        <span class="hero-tag green">Pilote Hike Up</span>
+      </div>
     </div>
     <div class="hero-right">
       <div class="hero-stat">
@@ -661,9 +704,9 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
         </div>
       </div>
       <div class="a-calc">
-        <span>Churn :</span> <strong id="churn-d" style="color:#F87171">20%</strong> &nbsp;·&nbsp;
-        <span>Mult. LTV :</span> <strong id="mult-d" style="color:#4ADE80">5×</strong><br>
-        <span>LTV / dossier (12k€) :</span> <strong id="ltv-ref-d" style="color:#818CF8">60 000 €</strong>
+        <span>Churn :</span> <strong id="churn-d" style="color:#DC2626">20%</strong> &nbsp;·&nbsp;
+        <span>Mult. LTV :</span> <strong id="mult-d" style="color:#059669">5×</strong><br>
+        <span>LTV / dossier (12k€) :</span> <strong id="ltv-ref-d" style="color:#4F46E5">60 000 €</strong>
       </div>
     </div>
     <div class="a-sec admin-full">
@@ -776,42 +819,119 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
     </div>
   </div>
 
+  <div class="section-label">Points clés</div>
+  <div class="insights-row section-gap">
+    <div class="card icard">
+      <h2>Attention requise</h2>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--red)"></div>
+        <div><div class="ii-t">CILcare — offre sans retour</div><div class="ii-b">Offre ExESS envoyée sem. du 9 fév. Plus de 6 semaines sans réponse. LTV : 60 000 €.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--red)"></div>
+        <div><div class="ii-t">Gaches Chimie — 3 échecs (2016, 2019, 2021)</div><div class="ii-b">Démo prévue le 27/3. Surveiller de près le résultat.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--amber)"></div>
+        <div><div class="ii-t">Akkodis — deadline 10 avril</div><div class="ii-b">RDV annulé le 17/3. Sans contact avant le 10/4 → disqualification.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--amber)"></div>
+        <div><div class="ii-t">Safran — sans réponse aux créneaux proposés</div><div class="ii-b">Nouvelles dates envoyées : 31 mars &amp; 1er avril.</div></div>
+      </div>
+    </div>
+    <div class="card icard">
+      <h2>Actions recommandées</h2>
+      <div class="ii">
+        <div class="ii-dot" style="background:#6366F1"></div>
+        <div><div class="ii-t">Lancer la stratégie calling</div><div class="ii-b">Pipeline 100 % email à ce jour. Cold &amp; warm calling = fort multiplicateur potentiel.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--green)"></div>
+        <div><div class="ii-t">Sanofi → EcoMundo</div><div class="ii-b">Besoin = digitalisation labo, hors périmètre ExESS. Transférer.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:#A78BFA"></div>
+        <div><div class="ii-t">Délifrance &amp; YSEIS → ComplyStation</div><div class="ii-b">Profils hors périmètre ExESS. À transférer.</div></div>
+      </div>
+      <div class="ii">
+        <div class="ii-dot" style="background:var(--ink3)"></div>
+        <div><div class="ii-t">22 % sans produit assigné</div><div class="ii-b">4 dossiers (48k€ ARR · 240k€ LTV) sans produit cible renseigné.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="insights-label">Repères B2B</div>
+  <div class="insights-scroll" id="insights-scroll">
+    <div class="insight-card">
+      <div class="insight-num">21×</div>
+      <div class="insight-text">plus de conversions si contacté en 5 min vs. 30 min</div>
+      <div class="insight-src">MIT / InsideSales.com — HBR, 2011</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">35–50%</div>
+      <div class="insight-text">des ventes vont au premier à répondre</div>
+      <div class="insight-src">InsideSales.com Research</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">82%</div>
+      <div class="insight-text">des acheteurs B2B acceptent un RDV avec un commercial proactif</div>
+      <div class="insight-src">Rain Group — Top Performance, 2018</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">44%</div>
+      <div class="insight-text">abandonnent après 1 seul suivi — 80% des ventes nécessitent 5+</div>
+      <div class="insight-src">Brevet Group / Marketing Donut</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">+95%</div>
+      <div class="insight-text">de profits avec seulement +5% de rétention</div>
+      <div class="insight-src">Frederick Reichheld, Bain &amp; Company — HBR, 2000</div>
+    </div>
+    <div class="insight-card">
+      <div class="insight-num">8</div>
+      <div class="insight-text">tentatives pour joindre un prospect en cold calling</div>
+      <div class="insight-src">Telenet &amp; Ovation Sales Group</div>
+    </div>
+  </div>
+
   <div class="section-label">Dossiers</div>
-  <div class="filters">
-    <div class="fg">
-      <label>Type</label>
-      <select id="f-ent" onchange="applyFilters()">
-        <option value="">Tous</option>
-        <option value="lead">Leads</option>
-        <option value="opportunity">Opportunités</option>
-      </select>
+  <div class="filters-wrap">
+    <div class="filters-inner">
+      <div class="filter-group-wrap">
+        <span class="filter-group-label">Type</span>
+        <div class="filter-group" id="filter-type">
+          <button class="filter-chip active" data-group="type" data-value="">Tous</button>
+          <button class="filter-chip" data-group="type" data-value="lead">Leads</button>
+          <button class="filter-chip" data-group="type" data-value="opportunity">Opportunités</button>
+        </div>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-group-wrap">
+        <span class="filter-group-label">Produit</span>
+        <div class="filter-group" id="filter-product">
+          <button class="filter-chip active" data-group="product" data-value="">Tous</button>
+          <button class="filter-chip" data-group="product" data-value="ExESS">ExESS</button>
+          <button class="filter-chip" data-group="product" data-value="ComplyStation">ComplyStation</button>
+          <button class="filter-chip" data-group="product" data-value="Publichem">Publichem</button>
+          <button class="filter-chip" data-group="product" data-value="EcoMundo">EcoMundo</button>
+        </div>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-group-wrap">
+        <span class="filter-group-label">HubSpot</span>
+        <div class="filter-group" id="filter-hubspot">
+          <button class="filter-chip active" data-group="hubspot" data-value="">Tous</button>
+          <button class="filter-chip" data-group="hubspot" data-value="New">New</button>
+          <button class="filter-chip" data-group="hubspot" data-value="Connected">Connected</button>
+          <button class="filter-chip" data-group="hubspot" data-value="Proposal">Proposal</button>
+        </div>
+      </div>
+      <div class="search-box">
+        <input type="text" id="f-q" placeholder="Entreprise, contact…" oninput="applyFilters()">
+      </div>
+      <div class="res-count"><span id="res-tag">0</span>/18</div>
     </div>
-    <div class="fg">
-      <label>Produit</label>
-      <select id="f-prod" onchange="applyFilters()">
-        <option value="">Tous</option>
-        <option value="ExESS">ExESS</option>
-        <option value="ComplyStation">ComplyStation</option>
-        <option value="Publichem">Publichem</option>
-        <option value="EcoMundo">EcoMundo</option>
-        <option value="nc">Non renseigné</option>
-      </select>
-    </div>
-    <div class="fg">
-      <label>HubSpot</label>
-      <select id="f-hs" onchange="applyFilters()">
-        <option value="">Tous</option>
-        <option value="New">New</option>
-        <option value="Connected">Connected</option>
-        <option value="Proposal">Proposal</option>
-      </select>
-    </div>
-    <div class="fg wide">
-      <label>Recherche</label>
-      <input type="text" id="f-q" placeholder="Entreprise, contact…" oninput="applyFilters()">
-    </div>
-    <button class="btn-reset" onclick="resetF()">✕</button>
-    <span class="res-tag" id="res-tag"></span>
   </div>
 
   <div class="tcard">
@@ -860,93 +980,13 @@ td.dt { color: var(--ink3); font-size: 12px; white-space: nowrap; }
     <div class="dp-note" id="dp-note"></div>
   </div>
 
-  <div class="section-label">Points clés</div>
-  <div class="insights-row section-gap">
-    <div class="card icard">
-      <h2>Attention requise</h2>
-      <div class="ii">
-        <div class="ii-dot" style="background:var(--red)"></div>
-        <div><div class="ii-t">CILcare — offre sans retour</div><div class="ii-b">Offre ExESS envoyée sem. du 9 fév. Plus de 6 semaines sans réponse. LTV : 60 000 €.</div></div>
-      </div>
-      <div class="ii">
-        <div class="ii-dot" style="background:var(--red)"></div>
-        <div><div class="ii-t">Gaches Chimie — 3 échecs (2016, 2019, 2021)</div><div class="ii-b">Démo prévue le 27/3. Surveiller de près le résultat.</div></div>
-      </div>
-      <div class="ii">
-        <div class="ii-dot" style="background:var(--amber)"></div>
-        <div><div class="ii-t">Akkodis — deadline 10 avril</div><div class="ii-b">RDV annulé le 17/3. Sans contact avant le 10/4 → disqualification.</div></div>
-      </div>
-      <div class="ii">
-        <div class="ii-dot" style="background:var(--amber)"></div>
-        <div><div class="ii-t">Safran — sans réponse aux créneaux proposés</div><div class="ii-b">Nouvelles dates envoyées : 31 mars &amp; 1er avril.</div></div>
-      </div>
-    </div>
-    <div class="card icard">
-      <h2>Actions recommandées</h2>
-      <div class="ii">
-        <div class="ii-dot" style="background:#6366F1"></div>
-        <div><div class="ii-t">Lancer la stratégie calling</div><div class="ii-b">Pipeline 100 % email à ce jour. Cold &amp; warm calling = fort multiplicateur potentiel.</div></div>
-      </div>
-      <div class="ii">
-        <div class="ii-dot" style="background:var(--green)"></div>
-        <div><div class="ii-t">Sanofi → EcoMundo</div><div class="ii-b">Besoin = digitalisation labo, hors périmètre ExESS. Transférer.</div></div>
-      </div>
-      <div class="ii">
-        <div class="ii-dot" style="background:#A78BFA"></div>
-        <div><div class="ii-t">Délifrance &amp; YSEIS → ComplyStation</div><div class="ii-b">Profils hors périmètre ExESS. À transférer.</div></div>
-      </div>
-      <div class="ii">
-        <div class="ii-dot" style="background:var(--ink3)"></div>
-        <div><div class="ii-t">22 % sans produit assigné</div><div class="ii-b">4 dossiers (48k€ ARR · 240k€ LTV) sans produit cible renseigné.</div></div>
-      </div>
-    </div>
-  </div>
+</div>
 
-  <div class="savez-wrap">
-    <div class="savez-toggle" onclick="toggleSavez()">
-      <span>Données de référence — Prospection B2B</span>
-      <span class="savez-toggle-icon" id="savez-icon">▾</span>
-    </div>
-    <div class="savez-body" id="savez-body">
-      <div class="savez-item">
-        <div class="savez-num">21×</div>
-        <div class="savez-claim">plus de conversions si contacté en 5 min vs. 30 min</div>
-        <div class="savez-detail">Réduire le time-to-contact d'un lead de 30 min à 5 min multiplie par 21 les chances de qualification.</div>
-        <div class="savez-src">MIT / InsideSales.com — Harvard Business Review, 2011</div>
-      </div>
-      <div class="savez-item">
-        <div class="savez-num">35–50%</div>
-        <div class="savez-claim">des ventes vont au premier à répondre</div>
-        <div class="savez-detail">En prospection B2B, la réactivité est souvent plus déterminante que le produit ou le prix.</div>
-        <div class="savez-src">InsideSales.com Research — Dr. James Oldroyd</div>
-      </div>
-      <div class="savez-item">
-        <div class="savez-num">82%</div>
-        <div class="savez-claim">des acheteurs B2B acceptent un RDV avec un commercial proactif</div>
-        <div class="savez-detail">La prospection sortante reste très efficace lorsqu'elle est personnalisée et contextualisée.</div>
-        <div class="savez-src">Rain Group — Top Performance in Sales Prospecting, 2018</div>
-      </div>
-      <div class="savez-item">
-        <div class="savez-num">44%</div>
-        <div class="savez-claim">abandonnent après 1 seul suivi — 80% des ventes nécessitent 5+</div>
-        <div class="savez-detail">La persistance est la clé. Seuls 8% des commerciaux font les 5 relances nécessaires.</div>
-        <div class="savez-src">Brevet Group / Marketing Donut</div>
-      </div>
-      <div class="savez-item">
-        <div class="savez-num">+95%</div>
-        <div class="savez-claim">de profits avec seulement +5% de rétention</div>
-        <div class="savez-detail">Fidéliser coûte 5 à 7× moins cher qu'acquérir. Un gain marginal de rétention a un impact exponentiel.</div>
-        <div class="savez-src">Frederick Reichheld, Bain &amp; Company — HBR, 2000</div>
-      </div>
-      <div class="savez-item">
-        <div class="savez-num">8</div>
-        <div class="savez-claim">tentatives pour joindre un prospect en cold calling</div>
-        <div class="savez-detail">90% des prospects sont joints par ceux qui persistent jusqu'à 8 tentatives. La majorité s'arrête à 2.</div>
-        <div class="savez-src">Telenet &amp; Ovation Sales Group</div>
-      </div>
-    </div>
-  </div>
-
+<!-- STICKY CO-BRAND -->
+<div class="cobrand">
+  <img src="logo-lisam.svg" alt="Lisam">
+  <span class="cobrand-sep">×</span>
+  <img src="logo-hikeup.svg" alt="Hike Up">
 </div>
 
 <script>
@@ -979,6 +1019,7 @@ let DATA = [
 
 let filtered = [...DATA];
 let sKey = 'date', sDir = 1, selRow = null, chart = null;
+const activeFilters = { type: '', product: '', hubspot: '' };
 const SO = {'Devis/Offre envoyé':0,'Rendez-vous prévu':1,"Deuxième tentative d'appel":2,'Nouveau':3,'En attente':4,'A appeler':5};
 const fmt = n => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n);
 const fd  = d => { const p=d.split('-'); return p[2]+'/'+p[1]+'/'+p[0].slice(2); };
@@ -986,6 +1027,26 @@ const ltv = a => a * LTV_M;
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 function sCls(s){ return s==='A appeler'?'b-s0':s.includes('tentative')?'b-s1':s==='En attente'?'b-s2':s==='Nouveau'?'b-s3':s.includes('Rendez')?'b-s4':'b-s5'; }
 function pCls(p){ return p==='ExESS'?'b-pe':p==='ComplyStation'?'b-pc':p==='Publichem'?'b-pp':p==='EcoMundo'?'b-pm':'b-pn'; }
+
+/* CHIP FILTERS */
+function initChipFilters(){
+  document.querySelectorAll('.filter-chip').forEach(chip=>{
+    chip.addEventListener('click',function(){
+      const group=this.dataset.group;
+      const value=this.dataset.value;
+      const parent=this.parentElement;
+      if(activeFilters[group]===value){
+        activeFilters[group]='';
+      } else {
+        activeFilters[group]=value;
+      }
+      parent.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+      parent.querySelectorAll(`.filter-chip[data-value="${activeFilters[group] || ''}"]`).forEach(c=>c.classList.add('active'));
+      applyFilters();
+    });
+  });
+  document.querySelectorAll('.filter-chip[data-value=""]').forEach(c=>c.classList.add('active'));
+}
 
 /* ADMIN MODAL */
 function openAdminModal(){
@@ -1105,24 +1166,18 @@ function exportJSON(){ const b=new Blob([JSON.stringify(DATA,null,2)],{type:'app
 
 /* FILTERS & SORT */
 function applyFilters(){
-  const e=document.getElementById('f-ent').value;
-  const p=document.getElementById('f-prod').value;
-  const h=document.getElementById('f-hs').value;
+  const e=activeFilters.type;
+  const p=activeFilters.product;
+  const h=activeFilters.hubspot;
   const q=document.getElementById('f-q').value.toLowerCase().trim();
   filtered=DATA.filter(r=>{
     if(e&&r.entity!==e) return false;
-    if(p==='nc'){if(r.product!=='') return false;}
-    else if(p&&r.product!==p) return false;
+    if(p&&r.product!==p) return false;
     if(h&&!r.hubspot.includes(h)) return false;
     if(q&&![r.company,r.firstName,r.lastName,r.status,r.product].join(' ').toLowerCase().includes(q)) return false;
     return true;
   });
   srtRender();
-}
-function resetF(){
-  ['f-ent','f-prod','f-hs'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('f-q').value='';
-  filtered=[...DATA]; srtRender();
 }
 function srt(k){ if(sKey===k)sDir*=-1;else{sKey=k;sDir=1;} srtRender(); }
 function srtRender(){
@@ -1160,7 +1215,7 @@ function renderKPIs(){
   document.getElementById('kpi-opps-s').textContent=opps.length+' dossier'+(opps.length>1?'s':'');
   document.getElementById('kpi-leads').textContent=fmt(leads.reduce((s,r)=>s+r.amount,0));
   document.getElementById('kpi-leads-s').textContent=leads.length+' dossier'+(leads.length>1?'s':'');
-  document.getElementById('res-tag').textContent=filtered.length+'/'+DATA.length;
+  document.getElementById('res-tag').textContent=filtered.length;
 }
 
 function renderFunnel(){
@@ -1269,13 +1324,70 @@ function closeDP(){
   document.getElementById('dp').classList.remove('open');
 }
 
-/* SAVIEZ-VOUS */
-function toggleSavez(){
-  document.getElementById('savez-body').classList.toggle('open');
-  document.getElementById('savez-icon').classList.toggle('open');
-}
+/* AUTO-SCROLL B2B INSIGHTS */
+(function(){
+  const el = document.getElementById('insights-scroll');
+  if(!el) return;
+  let speed = .5; // px per frame
+  let paused = false;
+  let rafId = null;
+  let isDragging = false;
+  let startX, scrollLeft;
+
+  function tick(){
+    if(!paused && !isDragging){
+      el.scrollLeft += speed;
+      // loop: if at end, jump back to start
+      if(el.scrollLeft >= el.scrollWidth - el.clientWidth - 1){
+        el.scrollLeft = 0;
+      }
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+
+  // Pause on hover
+  el.addEventListener('mouseenter', ()=>{ paused = true; });
+  el.addEventListener('mouseleave', ()=>{ if(!isDragging) paused = false; });
+
+  // Drag to scroll manually
+  el.addEventListener('mousedown', e=>{
+    isDragging = true; paused = true;
+    el.classList.add('grabbing');
+    startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+    e.preventDefault();
+  });
+  document.addEventListener('mousemove', e=>{
+    if(!isDragging) return;
+    const x = e.pageX - el.offsetLeft;
+    el.scrollLeft = scrollLeft - (x - startX);
+  });
+  document.addEventListener('mouseup', ()=>{
+    if(!isDragging) return;
+    isDragging = false;
+    el.classList.remove('grabbing');
+    paused = false;
+  });
+
+  // Touch support
+  let touchStartX;
+  el.addEventListener('touchstart', e=>{
+    paused = true;
+    touchStartX = e.touches[0].pageX;
+    scrollLeft = el.scrollLeft;
+  }, {passive:true});
+  el.addEventListener('touchmove', e=>{
+    const x = e.touches[0].pageX;
+    el.scrollLeft = scrollLeft - (x - touchStartX);
+  }, {passive:true});
+  el.addEventListener('touchend', ()=>{
+    paused = false;
+  });
+})();
 
 /* INIT */
+initChipFilters();
 applyFilters();
 </script>
 </body>
